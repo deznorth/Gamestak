@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Gamestak.DataAccess\Gamestak.DataAccess.csproj" />
+    <ProjectReference Include="..\Gamestak.DataAccess\Gamestak.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
