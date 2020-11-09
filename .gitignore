@@ -1,0 +1,11 @@
+**/.DS_Store
+.idea
+obj
+bin
+node_modules
+.vs/
+
+yarn-error.log
+
+src/Gamestak/wwwroot/dist
+src/gamestak-client/dist
