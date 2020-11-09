@@ -26,7 +26,7 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
-                var query = "select * from dbo.users";
+                var query = "select * from users";
                 return (await conn.QueryAsync<User>(query)).ToList();
             });
         }

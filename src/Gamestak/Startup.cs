@@ -96,8 +96,12 @@ namespace Gamestak
             forwardedHeadersOptions.KnownNetworks.Clear();
             forwardedHeadersOptions.KnownProxies.Clear();
 
+            if (env.EnvironmentName != "Unf")
+            {
+                app.UseHttpsRedirection();
+            }
+
             app
-                .UseHttpsRedirection()
                 .UseStaticFiles()
                 .UseRouting();
 
