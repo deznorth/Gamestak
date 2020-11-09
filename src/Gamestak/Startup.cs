@@ -16,6 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
+using Gamestak.Repositories;
+using Gamestak.DataAccess.Contracts;
+using Gamestak.DataAccess.Databases;
+using Gamestak.DataAccess;
 
 namespace Gamestak
 {
@@ -63,6 +67,13 @@ namespace Gamestak
         {
             // Example
             // builder.RegisterType < "Repo/Service" > ().AsImplementedInterfaces();
+
+            builder.RegisterModule(new ModuleBuilder()
+                .UseDefaultConfigManagerCore()
+                .UseConnectionOwner<GamestakDb>()
+                .Build());
+
+            builder.RegisterType<UserRepository>().AsImplementedInterfaces();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,11 +108,9 @@ namespace Gamestak
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapFallbackToController("Index", "Home"); // 404 Page will be handled by the front-end so send index route
             });
 
             app.UseCors(policy =>
