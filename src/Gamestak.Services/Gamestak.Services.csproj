@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gamestak.Entities\Gamestak.Entities.csproj" />
+    <ProjectReference Include="..\Gamestak.Repositories\Gamestak.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>

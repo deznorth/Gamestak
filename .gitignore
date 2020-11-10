@@ -7,5 +7,6 @@ node_modules
 
 yarn-error.log
 
+# Remove the line below when the project is done so I can actually push the compiled code
 src/Gamestak/wwwroot/dist
 src/gamestak-client/dist

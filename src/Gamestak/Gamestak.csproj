@@ -12,6 +12,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.9" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gamestak.DataAccess\Gamestak.DataAccess.csproj" />
+    <ProjectReference Include="..\Gamestak.Entities\Gamestak.Entities.csproj" />
+    <ProjectReference Include="..\Gamestak.Repositories\Gamestak.Repositories.csproj" />
+    <ProjectReference Include="..\Gamestak.Services\Gamestak.Services.csproj" />
   </ItemGroup>
 
 </Project>

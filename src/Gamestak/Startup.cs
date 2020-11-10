@@ -1,21 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using Serilog;
+using Gamestak.Repositories;
+using Gamestak.Services;
+using Gamestak.DataAccess.Databases;
+using Gamestak.DataAccess;
 
 namespace Gamestak
 {
@@ -61,8 +58,17 @@ namespace Gamestak
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Example
-            // builder.RegisterType < "Repo/Service" > ().AsImplementedInterfaces();
+            // Modules
+            builder.RegisterModule(new ModuleBuilder()
+                .UseDefaultConfigManagerCore()
+                .UseConnectionOwner<GamestakDb>()
+                .Build());
+
+            // Repositories
+            builder.RegisterType<UserRepository>().AsImplementedInterfaces().SingleInstance();
+
+            // Services
+            builder.RegisterType<UserService>().AsImplementedInterfaces().SingleInstance();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,8 +91,12 @@ namespace Gamestak
             forwardedHeadersOptions.KnownNetworks.Clear();
             forwardedHeadersOptions.KnownProxies.Clear();
 
+            if (env.EnvironmentName != "Unf")
+            {
+                app.UseHttpsRedirection();
+            }
+
             app
-                .UseHttpsRedirection()
                 .UseStaticFiles()
                 .UseRouting();
 
@@ -97,11 +107,9 @@ namespace Gamestak
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapFallbackToController("Index", "Home"); // 404 Page will be handled by the front-end so send index route
             });
 
             app.UseCors(policy =>
