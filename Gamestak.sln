@@ -9,6 +9,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{DCA9CD11-F26
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamestak.DataAccess", "src\Gamestak.DataAccess\Gamestak.DataAccess.csproj", "{47942495-9F9F-41A3-ABF7-4CFA6519640E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{4DC3DCB8-08BF-464B-93DA-14C865CA03F1}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{C4A847C0-FE68-4067-9CB0-FF36BBC92CF6}"
+	ProjectSection(SolutionItems) = preProject
+		SQL\User_Queries.sql = SQL\User_Queries.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamestak.Repositories", "src\Gamestak.Repositories\Gamestak.Repositories.csproj", "{A3AB3253-4533-4A45-8613-C76B39C3C7C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamestak.Services", "src\Gamestak.Services\Gamestak.Services.csproj", "{F95CC037-CE5C-4BE1-BC39-21926F46309D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamestak.Entities", "src\Gamestak.Entities\Gamestak.Entities.csproj", "{C8CC417C-FB49-4551-8876-BC333FE5E356}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +40,28 @@ Global
 		{47942495-9F9F-41A3-ABF7-4CFA6519640E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47942495-9F9F-41A3-ABF7-4CFA6519640E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47942495-9F9F-41A3-ABF7-4CFA6519640E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3AB3253-4533-4A45-8613-C76B39C3C7C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3AB3253-4533-4A45-8613-C76B39C3C7C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3AB3253-4533-4A45-8613-C76B39C3C7C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3AB3253-4533-4A45-8613-C76B39C3C7C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95CC037-CE5C-4BE1-BC39-21926F46309D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95CC037-CE5C-4BE1-BC39-21926F46309D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95CC037-CE5C-4BE1-BC39-21926F46309D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F95CC037-CE5C-4BE1-BC39-21926F46309D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8CC417C-FB49-4551-8876-BC333FE5E356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8CC417C-FB49-4551-8876-BC333FE5E356}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8CC417C-FB49-4551-8876-BC333FE5E356}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8CC417C-FB49-4551-8876-BC333FE5E356}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{47942495-9F9F-41A3-ABF7-4CFA6519640E} = {DCA9CD11-F261-46C8-A0D5-A7FBBBCD5222}
+		{C4A847C0-FE68-4067-9CB0-FF36BBC92CF6} = {4DC3DCB8-08BF-464B-93DA-14C865CA03F1}
+		{A3AB3253-4533-4A45-8613-C76B39C3C7C2} = {DCA9CD11-F261-46C8-A0D5-A7FBBBCD5222}
+		{F95CC037-CE5C-4BE1-BC39-21926F46309D} = {DCA9CD11-F261-46C8-A0D5-A7FBBBCD5222}
+		{C8CC417C-FB49-4551-8876-BC333FE5E356} = {DCA9CD11-F261-46C8-A0D5-A7FBBBCD5222}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9709D776-D03C-48EE-BE8E-5B5DED13C29C}

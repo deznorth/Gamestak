@@ -1,23 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using Serilog;
 using Gamestak.Repositories;
-using Gamestak.DataAccess.Contracts;
+using Gamestak.Services;
 using Gamestak.DataAccess.Databases;
 using Gamestak.DataAccess;
 
@@ -65,15 +58,17 @@ namespace Gamestak
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Example
-            // builder.RegisterType < "Repo/Service" > ().AsImplementedInterfaces();
-
+            // Modules
             builder.RegisterModule(new ModuleBuilder()
                 .UseDefaultConfigManagerCore()
                 .UseConnectionOwner<GamestakDb>()
                 .Build());
 
-            builder.RegisterType<UserRepository>().AsImplementedInterfaces();
+            // Repositories
+            builder.RegisterType<UserRepository>().AsImplementedInterfaces().SingleInstance();
+
+            // Services
+            builder.RegisterType<UserService>().AsImplementedInterfaces().SingleInstance();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

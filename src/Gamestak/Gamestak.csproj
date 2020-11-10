@@ -19,6 +19,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gamestak.DataAccess\Gamestak.DataAccess.csproj" />
+    <ProjectReference Include="..\Gamestak.Entities\Gamestak.Entities.csproj" />
+    <ProjectReference Include="..\Gamestak.Repositories\Gamestak.Repositories.csproj" />
+    <ProjectReference Include="..\Gamestak.Services\Gamestak.Services.csproj" />
   </ItemGroup>
 
 </Project>
