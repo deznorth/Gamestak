@@ -3,6 +3,7 @@ using Gamestak.Repositories.Contracts;
 using Gamestak.DataAccess.Contracts;
 using Gamestak.DataAccess.Databases;
 using Gamestak.Entities;
+using Gamestak.Entities.Constants;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,10 +30,10 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
-                var query = @"
-                    IF NOT EXISTS (SELECT UserId FROM users WHERE Username = @Username)
+                var query = @$"
+                    IF NOT EXISTS (SELECT UserId FROM {DbTables.Users} WHERE Username = @Username)
                     BEGIN
-	                    INSERT INTO users (Username, Password)
+	                    INSERT INTO {DbTables.Users} (Username, Password)
 	                    VALUES (@Username, @Password)
                     END
                 ";
@@ -53,7 +54,7 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
-                var query = "select * from users";
+                var query = $"select * from {DbTables.Users}";
 
                 var response = await conn.QueryAsync<User>(query);
 
@@ -65,7 +66,7 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
-                var query = "SELECT * FROM users WHERE UserId = @UserId";
+                var query = $"SELECT * FROM {DbTables.Users} WHERE UserId = @UserId";
 
                 var response = await conn.QueryAsync<User>(query, new { UserId = id });
 
@@ -77,7 +78,7 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
-                var query = "SELECT * FROM users WHERE Username = @Username";
+                var query = $"SELECT * FROM {DbTables.Users} WHERE Username = @Username";
 
                 var response = await conn.QueryAsync<User>(query, new { Username = username });
 
@@ -92,10 +93,10 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
-                var query = @"
-                    IF EXISTS (SELECT UserId FROM users WHERE UserID = @UserId)
+                var query = @$"
+                    IF EXISTS (SELECT UserId FROM {DbTables.Users} WHERE UserID = @UserId)
                     BEGIN
-	                    DELETE FROM users
+	                    DELETE FROM {DbTables.Users}
 	                    WHERE UserID = @UserId
                     END
                 ";
