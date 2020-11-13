@@ -66,9 +66,11 @@ namespace Gamestak
 
             // Repositories
             builder.RegisterType<UserRepository>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<GameRepository>().AsImplementedInterfaces().SingleInstance();
 
             // Services
             builder.RegisterType<UserService>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<GameService>().AsImplementedInterfaces().SingleInstance();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
