@@ -5,7 +5,8 @@ module.exports = {
   devtool: false,
 
   entry: {
-    'gamestak': [ 'core-js/stable', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'src', 'index.js')],
+    'gamestak': [ 'core-js/stable', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'app', 'index.js')],
+    'admin': [ 'core-js/stable', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'admin', 'index.js')],
   },
 
   output: {
@@ -17,7 +18,12 @@ module.exports = {
 
   resolve: {
     alias: {
-      root: path.join(__dirname, '..', 'src'),
+      root: path.join(__dirname, '..'),
+      app: path.join(__dirname, '..', 'app'),
+      admin: path.join(__dirname, '..', 'admin'),
+      pages: path.join(__dirname, '..', 'pages'),
+      components: path.join(__dirname, '..', 'components'),
+      util: path.join(__dirname, '..', 'util'),
     },
   },
 
