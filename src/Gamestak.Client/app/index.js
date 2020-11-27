@@ -5,6 +5,7 @@ import { storeCreator } from 'util/storeCreator';
 import sagas from './sagas';
 import * as reducers from './reducers';
 import { Root } from './Root';
+import debugModule from 'debug';
 
 const history = createHashHistory();
 
@@ -16,3 +17,5 @@ const reduxStore = storeCreator({
 });
 
 render(<Root store={reduxStore} history={history} />, document.getElementById('react-root'));
+
+window.debug = debugModule;
