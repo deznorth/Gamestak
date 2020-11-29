@@ -4,7 +4,7 @@
 // Toggles
 
 $enable-rounded: false;
-$enable-shadows: true;
+$enable-shadows: false;
 $enable-gradients: true;
 
 // Color Variables
@@ -108,6 +108,18 @@ $table-bg: $gray-900;
 $table-head-bg: $gray-900;
 
 $table-th-font-weight: bold;
+
+// Navbar
+
+$navbar-light-color: rgba($white, 0.5);
+$navbar-light-hover-color: rgba($white, 0.75);
+$navbar-light-active-color: $primary;
+$navbar-light-disabled-color: rgba($white, 0.25);
+$navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+$navbar-light-toggler-border-color: rgba($white, 0.1);
+
+$navbar-light-brand-color: $white;
+$navbar-light-brand-hover-color: $white;
 
 // Component style overrides
 html {

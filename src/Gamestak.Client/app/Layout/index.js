@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import NavBar from 'components/NavBar';
+
+import './style.scss';
 
 const Layout = props => {
   const {
@@ -8,6 +11,7 @@ const Layout = props => {
 
   return (
     <div className="gs-layout">
+      <NavBar />
       {children}
     </div>
   );
