@@ -11,10 +11,18 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import Nav from 'react-bootstrap/Nav';
+import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
 
-const LandingPage = props => {
+import ColorSwatch from './ColorSwatch';
+
+import './style.scss';
+
+const ThemePage = () => {
   return (
-    <div>
+    <Container>
       <br />
       <br />
       <Jumbotron>
@@ -27,6 +35,9 @@ const LandingPage = props => {
           <Button variant="primary">Learn more</Button>
         </p>
       </Jumbotron>
+      <br />
+      <br />
+      <ProgressBar now={60} />
       <br />
       <br />
       <Carousel>
@@ -131,23 +142,40 @@ const LandingPage = props => {
       </Card>
       <br />
       <br />
+      <Nav
+        activeKey="/home"
+        onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
+      >
+        <Nav.Item>
+          <Nav.Link href="/home">Active</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-1">Link</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-2">Link</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="disabled" disabled>
+            Disabled
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <br />
+      <br />
       <Accordion defaultActiveKey="0">
         <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey="0">
-              Click me!
-            </Accordion.Toggle>
-          </Card.Header>
+          <Accordion.Toggle as={Card.Header} className="text-primary" eventKey="0">
+            Click me!
+          </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <Card.Body>Hello! I'm the body</Card.Body>
           </Accordion.Collapse>
         </Card>
         <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey="1">
-              Click me!
-            </Accordion.Toggle>
-          </Card.Header>
+          <Accordion.Toggle as={Card.Header} className="text-primary" eventKey="1">
+            Click me!
+          </Accordion.Toggle>
           <Accordion.Collapse eventKey="1">
             <Card.Body>Hello! I'm another body</Card.Body>
           </Accordion.Collapse>
@@ -247,8 +275,66 @@ const LandingPage = props => {
       </Form>
       <br />
       <br />
-    </div>
+      {
+        [
+          "gs-white",
+          "gs-gray-100",
+          "gs-gray-200",
+          "gs-gray-300",
+          "gs-gray-400",
+          "gs-gray-500",
+          "gs-gray-600",
+          "gs-gray-700",
+          "gs-gray-800",
+          "gs-gray-900",
+          "gs-black",
+          "gs-blue",
+          "gs-indigo",
+          "gs-purple",
+          "gs-pink",
+          "gs-red",
+          "gs-orange",
+          "gs-yellow",
+          "gs-green",
+          "gs-teal",
+          "gs-cyan",
+        ].map((s, i) => <ColorSwatch key={i} className={s}/>)
+      }
+      <br />
+      <br />
+      <Table striped bordered hover size="sm">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td colSpan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </Table>
+      <br />
+      <br />
+    </Container>
   );
 };
 
-export default LandingPage;
+export default ThemePage;

@@ -1,44 +1,60 @@
 // Variable overrides within the same Sass file can come before or after the default variables.
 // However, when overriding across Sass files, your overrides must come before you import Bootstrap’s Sass files.
 
+// Toggles
+
+$enable-rounded: false;
+$enable-shadows: true;
+$enable-gradients: true;
+
 // Color Variables
 
-$white: #fff !default;
-$gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #6c757d !default;
-$gray-700: #495057 !default;
-$gray-800: #343a40 !default;
-$gray-900: #212529 !default;
-$black: #000 !default;
+$blue: #3a83d1;
+$indigo: #7741ce;
+$purple: #7852bd;
+$pink: #cf5e92;
+$red: #c7525e;
+$orange: #d48849;
+$yellow: #d3ad3c;
+$green: #3ba955;
+$teal: #3abd96;
+$cyan: #349faf;
 
-// $blue: #007bff !default;
-// $indigo: #6610f2 !default;
-// $purple: #6f42c1 !default;
-// $pink: #e83e8c !default;
-// $red: #dc3545 !default;
-// $orange: #fd7e14 !default;
-// $yellow: #ffc107 !default;
-// $green: #28a745 !default;
-// $teal: #20c997 !default;
-// $cyan: #17a2b8 !default;
+$primary: $purple;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
 
-// $primary:       $blue !default;
-// $secondary:     $gray-600 !default;
-// $success:       $green !default;
-// $info:          $cyan !default;
-// $warning:       $yellow !default;
-// $danger:        $red !default;
-// $light:         $gray-100 !default;
-// $dark:          $gray-800 !default;
+$white: #fff;
+$gray-100: mix(#f8f9fa, $primary, 98%);
+$gray-200: mix(#e9ecef, $primary, 96%);
+$gray-300: mix(#dee2e6, $primary, 94%);
+$gray-400: mix(#ced4da, $primary, 92%);
+$gray-500: mix(#adb5bd, $primary, 90%);
+$gray-600: mix(#6c757d, $primary, 90%);
+$gray-700: mix(#495057, $primary, 90%);
+$gray-800: mix(#343a40, $primary, 90%);
+$gray-900: mix(#212529, $primary, 90%);
+$black: #000;
 
-$body-bg: #18171e;
-$body-color: #e9ecef;
+$secondary: $gray-600;
+$light: $gray-200;
+$dark: $gray-800;
 
-$component-active-color: #18171e;
+$body-bg: darken($gray-900, 6%);
+$body-color: $gray-100;
+
+// Typography
+
+// $font-size-base: 1rem;
+// $font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+//   'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+//   'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+// $headings-font-family: null;
+// $headings-color: null;
+
+// Component variable overrides
 
 // General Input
 $input-color: $body-color;
@@ -47,24 +63,24 @@ $input-group-addon-bg: lighten($body-bg, 25%);
 $input-bg: lighten($body-bg, 15%);
 $input-disabled-bg: lighten($body-bg, 5%);
 $input-border-color: lighten($body-bg, 25%);
+$input-focus-bg: darken($input-bg, 8%);
 
-// Custom Range Input
-$custom-range-track-bg: lighten($body-bg, 25%);
-$custom-range-thumb-bg: lighten($body-bg, 25%);
+// Buttons
+$input-btn-focus-width: 0.1rem !default;
 
 // Jumbotron
 $jumbotron-bg: lighten($body-bg, 8%);
 
 // Breadcrumbs
-$breadcrumb-bg: lighten($body-bg, 9%);
-$breadcrumb-active-color: $gray-500;
+$breadcrumb-bg: lighten($body-bg, 10%);
+$breadcrumb-active-color: $gray-400;
 
 // Card
-$card-bg: lighten($body-bg, 6%);
+$card-bg: lighten($body-bg, 8%);
 
 // Tooltip
-$tooltip-bg: white;
-$tooltip-color: black;
+$tooltip-bg: $white;
+$tooltip-color: $black;
 
 // Alert
 $alert-bg-level: 8;
@@ -78,20 +94,26 @@ $dropdown-link-hover-color: darken($gray-200, 5%);
 $dropdown-link-hover-bg: lighten($body-bg, 6%);
 
 // Progress Bars
-$progress-bg: $gray-600;
+$progress-bg: $gray-400;
 
-// Typography
+// Table
 
-$font-size-base: 0.9rem;
+$table-accent-bg: $gray-800;
+$table-hover-bg: $gray-700;
+$table-active-bg: $gray-900;
+$table-border-color: darken($gray-900, 5%);
 
-// Toggles
+$table-bg: $gray-900;
+$table-head-bg: $gray-900;
 
-// $enable-caret:                                true !default;
-$enable-rounded: true;
-$enable-shadows: true;
-$enable-gradients: true;
-// $enable-responsive-font-sizes:                false !default;
+$table-th-font-weight: bold;
 
-// $theme-colors: ();
+// Component style overrides
+
+.close:focus,
+.btn-link:focus {
+  outline: none;
+  box-shadow: none !important;
+}
 
 @import '~bootstrap/scss/bootstrap'; // Leave at the end!

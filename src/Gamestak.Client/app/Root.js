@@ -8,7 +8,7 @@ import './style.scss';
 const Layout = lazy(() => import(/* webpackChunkName: "gs-layout" */ './Layout'));
 
 // Pages
-const LandingPage = lazy(() => import(/* webpackChunkName: "gs-landing" */ 'pages/Landing'));
+const ThemePage = lazy(() => import(/* webpackChunkName: "gs-theme" */ 'pages/Theme'));
 
 export const Root = ({ store, history }) => {
   return (
@@ -17,7 +17,7 @@ export const Root = ({ store, history }) => {
         <Suspense fallback={<div>Loading...</div>}>
           <Layout>
             <Switch>
-              <Route path="/" component={LandingPage} />
+              <Route path="/theme" component={ThemePage} />
               <Route render={() => <div>Not Found</div>} />
             </Switch>
           </Layout>

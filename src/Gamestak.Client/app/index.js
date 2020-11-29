@@ -1,13 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createHashHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import { storeCreator } from 'util/storeCreator';
 import sagas from './sagas';
 import * as reducers from './reducers';
 import { Root } from './Root';
 import debugModule from 'debug';
 
-const history = createHashHistory();
+const history = createBrowserHistory();
 
 const reduxStore = storeCreator({
   initialState: {},

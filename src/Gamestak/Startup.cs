@@ -110,8 +110,10 @@ namespace Gamestak
             {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "management",
+                    pattern: "manage/{*url}",
+                    defaults: new { controller = "Home", action = "Management" });
+                endpoints.MapFallbackToController("Index", "Home");
             });
 
             app.UseCors(policy =>
