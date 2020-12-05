@@ -5,11 +5,11 @@ import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import SITEMAP from 'util/sitemap';
+import { SITEMAP_NAVBAR } from 'util/sitemap';
 
 import './style.scss';
 
-const NavBar = props => {
+const NavBar = () => {
   return (
     <Navbar fixed="top" expand="md" className="gs-navbar">
       <Container fluid>
@@ -20,22 +20,18 @@ const NavBar = props => {
         <Navbar.Collapse className="justify-content-between">
           <Nav>
             {
-              Object.values(SITEMAP).map((page, index) => {
+              Object.values(SITEMAP_NAVBAR).map((page, index) => {
                 return (
                   <LinkContainer key={index} to={page.path} exact={page.exact}>
-                    <Nav.Link eventKey={page.name}>{page.name.toUpperCase()}</Nav.Link>
+                    <Nav.Link eventKey={page.path}>{page.name.toUpperCase()}</Nav.Link>
                   </LinkContainer>
                 );
               })
             }
           </Nav>
           <div>
-            <LinkContainer to="/login" exact className="mr-3">
-              <Button variant="text">SIGN IN</Button>
-            </LinkContainer>
-            <LinkContainer to="/signup" exact>
-              <Button variant="primary">SIGN UP!</Button>
-            </LinkContainer>
+            <Button variant="text" className="mr-3">SIGN IN</Button>
+            <Button variant="primary">SIGN UP!</Button>
           </div>
         </Navbar.Collapse>
       </Container>

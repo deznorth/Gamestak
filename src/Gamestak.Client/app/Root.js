@@ -1,14 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
-import SITEMAP from 'util/sitemap';
+import { SITEMAP } from 'util/sitemap';
 import Layout from './Layout';
 import './style.scss';
-
-// Pages
-const ThemePage = lazy(() => import(/* webpackChunkName: "gs-theme" */ 'pages/Theme'));
 
 export const Root = ({ store, history }) => {
   return (
@@ -24,7 +21,6 @@ export const Root = ({ store, history }) => {
                   );
                 })
               }
-              <Route path="/theme" component={ThemePage} />
               <Route render={() => <div>Not Found</div>} />
             </Switch>
           </Layout>

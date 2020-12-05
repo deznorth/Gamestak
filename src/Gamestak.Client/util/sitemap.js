@@ -1,8 +1,12 @@
 import { lazy } from 'react';
 
+// Gamestak Pages
 const StorePage = lazy(() => import(/* webpackChunkName: "gs-store" */ 'pages/Store'));
+const ThemePage = lazy(() => import(/* webpackChunkName: "gs-theme" */ 'pages/Theme'));
 
-const SITEMAP = {
+// Admin Pages
+
+export const SITEMAP_NAVBAR = {
   Store: {
     name: 'store',
     path: '/',
@@ -19,11 +23,26 @@ const SITEMAP = {
     path: '/library',
     exact: true,
   },
-  Profile: {
-    name: 'profile',
-    path: '/profile',
+};
+
+export const SITEMAP = {
+  ...SITEMAP_NAVBAR,
+  Theme: {
+    name: 'theme',
+    path: '/theme',
     exact: true,
+    component: ThemePage,
   },
 };
 
-export default SITEMAP;
+export const SITEMAP_ADMIN_NAVBAR = {
+  Dashboard: {
+    name: 'dashboard',
+    path: '/',
+    exact: true,
+  }
+};
+
+export const SITEMAP_ADMIN = {
+  ...SITEMAP_ADMIN_NAVBAR,
+};
