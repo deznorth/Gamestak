@@ -6,7 +6,7 @@ import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import { SITEMAP_NAVBAR } from 'util/sitemap';
+import { SITEMAP_NAVBAR } from 'app/sitemap';
 
 import './style.scss';
 

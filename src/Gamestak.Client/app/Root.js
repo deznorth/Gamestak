@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
-import { SITEMAP } from 'util/sitemap';
+import { SITEMAP } from './sitemap';
 import Layout from './Layout';
 import './style.scss';
 
