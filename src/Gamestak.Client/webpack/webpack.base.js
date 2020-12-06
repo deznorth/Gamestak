@@ -19,6 +19,7 @@ module.exports = {
   resolve: {
     alias: {
       root: path.join(__dirname, '..'),
+      assets: path.join(__dirname, '..', 'assets'),
       app: path.join(__dirname, '..', 'app'),
       admin: path.join(__dirname, '..', 'admin'),
       pages: path.join(__dirname, '..', 'pages'),
@@ -40,6 +41,14 @@ module.exports = {
           { loader: 'style-loader' },
           { loader: 'css-loader' }
         ]
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       }
     ]
   },

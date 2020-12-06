@@ -123,6 +123,7 @@ $navbar-light-brand-hover-color: $white;
 
 // Component style overrides
 html {
+  min-height: 100%;
   font-size: 10px; // set rem to 10px so measurements are easy
 }
 

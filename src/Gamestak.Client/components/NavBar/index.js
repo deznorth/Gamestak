@@ -1,5 +1,6 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
+import { PersonSquare, Gear } from 'react-bootstrap-icons';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -30,7 +31,11 @@ const NavBar = () => {
             }
           </Nav>
           <div>
-            <Button variant="text" className="mr-3">SIGN IN</Button>
+            {/* This will be hidden once I add the auth system */}
+            <Button variant="text" className="mr-3"><Gear size={18} className="gs-navbar__gear-icon"/></Button>
+            <Button variant="text" className="mr-3">
+              <PersonSquare size={24} className="pr-2"/> SIGN IN
+            </Button>
             <Button variant="primary">SIGN UP!</Button>
           </div>
         </Navbar.Collapse>

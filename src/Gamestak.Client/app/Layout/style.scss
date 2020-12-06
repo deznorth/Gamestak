@@ -1,3 +1,26 @@
+@import 'util/styles/gamestak-bootstrap.scss';
+
+html {
+  background-image: url('assets/BackgroundImage.jpg');
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
 .gs-layout {
-  padding-top: 4.1rem;
+  min-height: 100vh;
+
+  &__container {
+    min-height: 100vh;
+    background: $body-bg;
+    background: linear-gradient(
+      180deg,
+      lighten($body-bg, 3%) 0%,
+      $body-bg 45%,
+      darken($body-bg, 6%) 100%
+    );
+    margin: 0 10vw;
+    padding: 4.1rem 4rem 8rem 4rem;
+  }
 }

@@ -12,7 +12,9 @@ const Layout = props => {
   return (
     <div className="gs-layout">
       <NavBar />
-      {children}
+      <div className="gs-layout__container">
+        {children}
+      </div>
     </div>
   );
 };
