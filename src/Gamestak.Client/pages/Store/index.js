@@ -2,6 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 
 import { GamesGrid } from 'components/GamesGrid';
+import { FiltersSideBar } from 'components/FiltersSideBar';
 
 import './style.scss';
 
@@ -30,12 +31,32 @@ const getGamesList = count => {
 const Store = props => {
   const games = getGamesList(8);
 
+  const categories = [
+    'Action',
+    'Adventure',
+    'Racing',
+    'RPG',
+    'Shooter',
+    'Survival',
+  ];
+  const features = [
+    'Single Player',
+    'Multiplayer',
+    'Co-op',
+    'VR'
+  ];
+
   return (
     <Container className="gs-store" fluid>
       <h1>Hello, World!</h1>
       <hr />
       <div className="d-flex">
         <GamesGrid className="flex-grow-1" games={games} />
+        <FiltersSideBar
+          className="pl-3 flex-grow-1"
+          categories={categories}
+          features={features}
+        />
       </div>
     </Container>
   );
