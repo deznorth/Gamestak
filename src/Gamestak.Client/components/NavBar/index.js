@@ -13,7 +13,7 @@ import './style.scss';
 const NavBar = () => {
   return (
     <Navbar fixed="top" expand="md" className="gs-navbar">
-      <Container fluid>
+      <Container fluid className="pl-5 pr-5">
         <Navbar.Brand>
           Gamestak
         </Navbar.Brand>
@@ -32,9 +32,9 @@ const NavBar = () => {
           </Nav>
           <div>
             {/* This will be hidden once I add the auth system */}
-            <Button variant="text" className="mr-3"><Gear size={18} className="gs-navbar__gear-icon"/></Button>
-            <Button variant="text" className="mr-3">
-              <PersonSquare size={24} className="pr-2"/> SIGN IN
+            <Button variant="text" className="mr-2"><Gear size={18} className="gs-navbar__gear-icon"/></Button>
+            <Button variant="text" className="mr-2">
+              <PersonSquare size={20} className="mr-1"/> SIGN IN
             </Button>
             <Button variant="primary">SIGN UP!</Button>
           </div>

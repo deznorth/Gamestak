@@ -45,9 +45,18 @@ $dark: $gray-800;
 $body-bg: darken($gray-900, 6%);
 $body-color: $gray-100;
 
+$spacer: 2rem;
+// This spacer produces these values for margin and padding utilities
+// 0: 0
+// 1: .5rem
+// 2: 1rem
+// 3: 2rem
+// 4: 3rem
+// 5: 6rem
+
 // Typography
 
-$font-size-base: 1.4rem; // since we set 1rem to 10px this is 14px as base size
+$font-size-base: 1.6rem; // since we set 1rem to 10px this is 16px as base size
 
 // $font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 //   'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
@@ -120,6 +129,10 @@ $navbar-light-toggler-border-color: rgba($white, 0.1);
 
 $navbar-light-brand-color: $white;
 $navbar-light-brand-hover-color: $white;
+
+// HR
+$hr-border-color: rgba($white, 0.1);
+$hr-border-width: 0.2rem;
 
 // Component style overrides
 html {
