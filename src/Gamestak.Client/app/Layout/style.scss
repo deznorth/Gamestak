@@ -21,6 +21,6 @@ body {
       darken($body-bg, 6%) 100%
     );
     margin: 0 10vw;
-    padding: 4.1rem 4rem 8rem 4rem;
+    padding: 8.1rem 4rem 8rem 4rem; // top 4.1rem to account for the navbar + 4rem of spacing
   }
 }
