@@ -36,8 +36,8 @@ namespace Gamestak.Repositories
                 var query = @$"
                     IF NOT EXISTS (SELECT GameID FROM {DbTables.Games} WHERE Title = @Title)
                     BEGIN
-	                    INSERT INTO {DbTables.Games} (Title, Price, ReleaseDate, HeroImageUrl, [Description])
-	                    VALUES (@Title, @Price, @ReleaseDate, @HeroImageUrl, @Description)
+	                    INSERT INTO {DbTables.Games} (Title, Publisher, [Description], Price, DiscountRate, ReleaseDate, ThumbnailUrl)
+	                    VALUES (@Title, @Publisher, @Description, @Price, @DiscountRate, @ReleaseDate, @ThumbnailUrl)
                     END
                 ";
 

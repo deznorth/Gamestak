@@ -42,6 +42,24 @@ namespace Gamestak.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+        [HttpPost("bulkAdd")]
+        public async Task<IActionResult> BulkSaveGames(List<GameCreationRequest> games)
+        {
+            try
+            {
+                var result = await gameService.BulkSaveGames(games);
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return new BadRequestResult();
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
         #endregion
 
         #region READ

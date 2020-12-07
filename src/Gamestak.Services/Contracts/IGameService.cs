@@ -8,6 +8,7 @@ namespace Gamestak.Services.Contracts
     {
         #region CREATE
         public Task<Game> SaveGame(GameCreationRequest game);
+        public Task<IEnumerable<Game>> BulkSaveGames(List<GameCreationRequest> games);
         #endregion
 
         #region READ

@@ -1,4 +1,4 @@
-import { takeLatest } from "redux-saga/effects";
+import { takeEvery } from "redux-saga/effects";
 import debug from 'debug';
 import * as actions from './actions';
 
@@ -9,5 +9,5 @@ function* initialize() {
 }
 
 export default [
-  takeLatest(actions.initialize, initialize),
+  takeEvery(actions.initialize, initialize),
 ];

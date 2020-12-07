@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 
 import { GamesGrid } from 'components/GamesGrid';
 import { FiltersSideBar } from 'components/FiltersSideBar';
+
+import selectors from './modules/selectors';
+import * as actions from './modules/actions';
 
 import './style.scss';
 
@@ -29,7 +33,12 @@ const getGamesList = count => {
 };
 
 const Store = props => {
-  const games = getGamesList(8);
+
+  const {
+    games,
+  } = props.state;
+
+  // const games = getGamesList(8);
 
   const categories = [
     'Action',
@@ -45,6 +54,10 @@ const Store = props => {
     'Co-op',
     'VR'
   ];
+
+  useEffect(() => {
+    props.init();
+  }, []);
 
   return (
     <Container className="gs-store" fluid>
@@ -62,4 +75,9 @@ const Store = props => {
   );
 };
 
-export default Store;
+export default connect(state => ({
+  state: selectors.selectPageState(state, 'store'),
+}), {
+  init: actions.initialize,
+  fetchGames: actions.fetchingGames,
+})(Store);

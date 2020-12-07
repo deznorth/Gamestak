@@ -42,6 +42,37 @@ namespace Gamestak.Services
                 throw e;
             }
         }
+
+        public async Task<IEnumerable<Game>> BulkSaveGames(List<GameCreationRequest> games)
+        {
+            try
+            {
+
+                List<Game> gamesResult = new List<Game>();
+                
+                games.ForEach(async game =>
+                {
+                    try
+                    {
+                        var savedGame = await gameRepository.SaveGame(game);
+                        var savedImages = await gameRepository.SaveGameImages(savedGame.GameID, game.ImageCollection);
+
+                        savedGame.ImageCollection = savedImages;
+
+                        gamesResult.Add(savedGame);
+                    } catch (Exception e)
+                    {
+                    }
+                });
+
+                return gamesResult;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error bulk saving games to the DB");
+                throw e;
+            }
+        }
         #endregion
 
         #region READ
