@@ -28,17 +28,25 @@ export const GamesGrid = props => {
   return (
     <Container className={cn}>
       {
-        gameRows.map((gr, i) => (
-          <Row key={i}>
-            {
-              gr.map(g => (
-                <Col key={g.gameID}>
-                  <GameCard {...g} />
-                </Col>
-              ))
-            }
-          </Row>
-        ))
+        gameRows.map((gr, i) => {
+          const cols = gr.map(g => (
+            <Col key={g.gameID}>
+              <GameCard {...g} />
+            </Col>
+          ));
+          
+          let paddingKey = 0;
+          while(cols.length < rowSize) {
+            cols.push(<Col key={paddingKey}></Col>);
+            paddingKey++;
+          }
+
+          return (
+            <Row key={i}>
+              {cols}
+            </Row>
+          );
+        })
       }
     </Container>
   );
