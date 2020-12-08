@@ -36,8 +36,8 @@ namespace Gamestak.Repositories
                 var query = @$"
                     IF NOT EXISTS (SELECT GameID FROM {DbTables.Games} WHERE Title = @Title)
                     BEGIN
-	                    INSERT INTO {DbTables.Games} (Title, Price, ReleaseDate, HeroImageUrl, [Description])
-	                    VALUES (@Title, @Price, @ReleaseDate, @HeroImageUrl, @Description)
+	                    INSERT INTO {DbTables.Games} (Title, Publisher, [Description], Price, DiscountRate, ReleaseDate, ThumbnailUrl)
+	                    VALUES (@Title, @Publisher, @Description, @Price, @DiscountRate, @ReleaseDate, @ThumbnailUrl)
                     END
                 ";
 
@@ -81,16 +81,158 @@ namespace Gamestak.Repositories
                 return result;
             });
         }
-        #endregion
 
-        #region READ
-        // Get all games and populate their "ImageCollection" field
-        public Task<List<Game>> GetGames()
+        public Task<int> FeatureGame(int gameId)
         {
             return gamestakDb.Use(async conn =>
             {
                 var query = @$"
-                    SELECT * FROM {DbTables.Games}
+                    IF NOT EXISTS (SELECT GameID FROM {DbTables.FeaturedGames} WHERE GameID = @GameId)
+                    BEGIN
+	                    INSERT INTO {DbTables.FeaturedGames} (GameID)
+	                    VALUES (@GameId)
+                    END
+                ";
+
+                var rowsAffected = await conn.ExecuteAsync(query, new { GameId = gameId });
+
+                if (rowsAffected < 0)
+                {
+                    throw new ArgumentException("Game object already featured or is invalid");
+                }
+
+                return rowsAffected;
+            });
+        }
+
+        public Task<List<Category>> AssignGameCategories(int gameId, List<int> categoryIds)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF NOT EXISTS (SELECT * FROM {DbTables.CategoryAssignments} WHERE GameID = @GameID AND CategoryID = @CategoryID)
+                    BEGIN
+	                    INSERT INTO {DbTables.CategoryAssignments} (GameID, CategoryID)
+	                    VALUES (@GameID, @CategoryID)
+                    END
+                ";
+
+                var parameters = categoryIds.Select(categoryID => new
+                {
+                    GameId = gameId,
+                    CategoryID = categoryID
+                }).ToArray();
+
+                await conn.ExecuteAsync(query, parameters);
+
+                var result = await GetCategoriesByGameID(gameId);
+
+                return result;
+            });
+        }
+
+        public Task<List<Feature>> AssignGameFeatures(int gameId, List<int> featureIds)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF NOT EXISTS (SELECT * FROM {DbTables.FeatureAssignments} WHERE GameID = @GameID AND FeatureID = @FeatureID)
+                    BEGIN
+	                    INSERT INTO {DbTables.FeatureAssignments} (GameID, FeatureID)
+	                    VALUES (@GameID, @FeatureID)
+                    END
+                ";
+
+                var parameters = featureIds.Select(featureID => new
+                {
+                    GameId = gameId,
+                    FeatureID = featureID
+                }).ToArray();
+
+                await conn.ExecuteAsync(query, parameters);
+
+                var result = await GetFeaturesByGameID(gameId);
+
+                return result;
+            });
+        }
+        #endregion
+
+        #region READ
+        // Get all games and populate their "ImageCollection" field
+        public Task<List<Game>> GetGames(GameSearch searchParams)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var searchTermPresent = searchParams.SearchTerm != "";
+                var categoriesPresent = searchParams.Categories != null && searchParams.Categories.Count > 0;
+                var featuresPresent = searchParams.Features != null && searchParams.Features.Count > 0;
+
+                var whereClause = "";
+                var orderbyClause = "ORDER BY ";
+
+                if (searchTermPresent || categoriesPresent || featuresPresent)
+                {
+                    whereClause = "WHERE";
+                }
+                if (searchTermPresent)
+                {
+                    whereClause += $@" Title LIKE '%{searchParams.SearchTerm}%'";
+                }
+                if (categoriesPresent)
+                {
+                    whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.CategoryAssignments} ca WHERE ca.GameID = g.GameID and CategoryID IN @CategoryIds)";
+                }
+                if (featuresPresent)
+                {
+                    whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.FeatureAssignments} fa WHERE fa.GameID = g.GameID and FeatureID IN @FeatureIds)";
+                }
+
+                switch (searchParams.SortBy)
+                {
+                    case SortType.NewerFirst:
+                        orderbyClause += "ReleaseDate DESC";
+                        break;
+                    case SortType.OlderFirst:
+                        orderbyClause += "ReleaseDate ASC";
+                        break;
+                    case SortType.AZ:
+                        orderbyClause += "Title ASC";
+                        break;
+                    case SortType.ZA:
+                        orderbyClause += "Title DESC";
+                        break;
+                    case SortType.PriceLowToHigh:
+                        orderbyClause += "Price ASC";
+                        break;
+                    case SortType.PriceHighToLow:
+                        orderbyClause += "Price DESC";
+                        break;
+                }
+
+                var query = @$"
+                    SELECT * FROM {DbTables.Games} g
+                    {whereClause}
+                    {orderbyClause}
+                ";
+
+                var games = (await conn.QueryAsync<Game>(query, new {
+                    CategoryIds = searchParams.Categories,
+                    FeatureIds = searchParams.Features,
+                })).ToList();
+
+                return await PopulateGamesImages(games);
+            });
+        }
+
+        public Task<List<Game>> GetFeaturedGames()
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT * FROM {DbTables.Games} g
+                    JOIN {DbTables.FeaturedGames} fg
+                    ON g.GameID = fg.GameID 
                 ";
 
                 var games = (await conn.QueryAsync<Game>(query)).ToList();
@@ -154,12 +296,98 @@ namespace Gamestak.Repositories
                 return result;
             });
         }
+
+        public Task<List<Category>> GetCategories()
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT * FROM {DbTables.Categories}
+                ";
+
+                var result = (await conn.QueryAsync<Category>(query)).ToList();
+
+                return result;
+            });
+        }
+
+        public Task<List<Category>> GetCategoriesByGameID(int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT ca.CategoryID, c.CategoryName
+                    FROM {DbTables.CategoryAssignments} ca
+                    JOIN {DbTables.Categories} c
+                    ON c.CategoryID = ca.CategoryID
+                    WHERE ca.GameID = @GameID
+                ";
+
+                var result = (await conn.QueryAsync<Category>(query, new { GameId = gameId })).ToList();
+
+                return result;
+            });
+        }
+
+        public Task<List<Feature>> GetFeatures()
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT * FROM {DbTables.Features}
+                ";
+
+                var result = (await conn.QueryAsync<Feature>(query)).ToList();
+
+                return result;
+            });
+        }
+
+        public Task<List<Feature>> GetFeaturesByGameID(int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT fa.FeatureID, f.FeatureName
+                    FROM {DbTables.FeatureAssignments} fa
+                    JOIN {DbTables.Features} f
+                    ON f.FeatureID = fa.FeatureID
+                    WHERE fa.GameID = @GameID
+                ";
+
+                var result = (await conn.QueryAsync<Feature>(query, new { GameId = gameId })).ToList();
+
+                return result;
+            });
+        }
         #endregion
 
         #region UPDATE
         #endregion
 
         #region DELETE
+        public Task<int> UnfeatureGame(int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF EXISTS (SELECT GameID FROM {DbTables.FeaturedGames} WHERE GameID = @GameId)
+                    BEGIN
+	                    DELETE FROM {DbTables.FeaturedGames}
+	                    WHERE GameID = @GameId
+                    END
+                ";
+
+                var rowsAffected = await conn.ExecuteAsync(query, new { GameId = gameId });
+
+                if (rowsAffected < 0)
+                {
+                    throw new Exception("Game object does not exist");
+                }
+
+                return rowsAffected;
+            });
+        }
         #endregion
 
         #region UTILITY

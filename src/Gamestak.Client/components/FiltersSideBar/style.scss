@@ -1,0 +1,12 @@
+@import 'util/styles/gamestak-vars';
+
+.gs-filters-sidebar {
+  &__filters-section {
+    background: transparent;
+    border: none;
+
+    .active-filter {
+      color: $primary;
+    }
+  }
+}

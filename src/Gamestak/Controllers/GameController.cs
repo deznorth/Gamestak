@@ -42,15 +42,65 @@ namespace Gamestak.Controllers
                 return new StatusCodeResult(500);
             }
         }
-        #endregion
 
-        #region READ
-        [HttpGet]
-        public async Task<IActionResult> GetGames()
+        [HttpPost("bulkAdd")]
+        public async Task<IActionResult> BulkSaveGames(List<GameCreationRequest> games)
         {
             try
             {
-                var result = await gameService.GetGames();
+                var result = await gameService.BulkSaveGames(games);
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return new BadRequestResult();
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpPost("featured/{gameId}")]
+        public async Task<IActionResult> FeatureGame(int gameId)
+        {
+            try
+            {
+                var result = await gameService.FeatureGame(gameId);
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return new BadRequestResult();
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+        #endregion
+
+        #region READ
+        [HttpPost("search")]
+        public async Task<IActionResult> GetGames([FromBody] GameSearch searchParams)
+        {
+            try
+            {
+                var result = await gameService.GetGames(searchParams);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("featured")]
+        public async Task<IActionResult> GetFeaturedGames()
+        {
+            try
+            {
+                var result = await gameService.GetFeaturedGames();
                 return Ok(result);
             }
             catch (Exception e)
@@ -114,12 +164,53 @@ namespace Gamestak.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+        [HttpGet("categories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            try
+            {
+                var result = await gameService.GetCategories();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("features")]
+        public async Task<IActionResult> GetFeatures()
+        {
+            try
+            {
+                var result = await gameService.GetFeatures();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
         #endregion
 
         #region UPDATE
         #endregion
 
         #region DELETE
+        [HttpDelete("featured/{gameId}")]
+        public async Task<IActionResult> UnfeatureGame(int gameId)
+        {
+            try
+            {
+                var result = await gameService.UnfeatureGame(gameId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
         #endregion
     }
 }

@@ -1,6 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import NavBar from 'components/NavBar';
+import * as actions from '../modules/actions';
 
 import './style.scss';
 
@@ -8,6 +9,12 @@ const Layout = props => {
   const {
     children,
   } = props;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.initialize());
+  }, []);
 
   return (
     <div className="gs-layout">
@@ -19,4 +26,4 @@ const Layout = props => {
   );
 };
 
-export default connect(state => ({}), {})(Layout);
+export default Layout;

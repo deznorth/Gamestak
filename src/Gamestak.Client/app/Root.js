@@ -5,6 +5,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
 import { SITEMAP } from './sitemap';
 import Layout from './Layout';
+
 import './style.scss';
 
 export const Root = ({ store, history }) => {

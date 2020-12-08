@@ -31,8 +31,12 @@ namespace Gamestak.Services
             {
                 var savedGame = await gameRepository.SaveGame(game);
                 var savedImages = await gameRepository.SaveGameImages(savedGame.GameID, game.ImageCollection);
+                var savedCategories = await gameRepository.AssignGameCategories(savedGame.GameID, game.Categories);
+                var savedFeatures = await gameRepository.AssignGameFeatures(savedGame.GameID, game.Features);
 
                 savedGame.ImageCollection = savedImages;
+                savedGame.Categories = savedCategories;
+                savedGame.Features = savedFeatures;
 
                 return savedGame;
             }
@@ -42,18 +46,71 @@ namespace Gamestak.Services
                 throw e;
             }
         }
-        #endregion
 
-        #region READ
-        public async Task<IEnumerable<Game>> GetGames()
+        public async Task<IEnumerable<Game>> BulkSaveGames(List<GameCreationRequest> games)
         {
             try
             {
-                return await gameRepository.GetGames();
+
+                List<Game> gamesResult = new List<Game>();
+                
+                games.ForEach(async game =>
+                {
+                    try
+                    {
+                        var savedGame = await SaveGame(game);
+
+                        gamesResult.Add(savedGame);
+                    } catch (Exception e)
+                    {
+                    }
+                });
+
+                return gamesResult;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error bulk saving games to the DB");
+                throw e;
+            }
+        }
+
+        public async Task<int> FeatureGame(int gameId)
+        {
+            try
+            {
+                return await gameRepository.FeatureGame(gameId);
+            } catch (Exception e)
+            {
+                logger.LogError(e, "Error adding game to featured games");
+                throw e;
+            }
+        }
+        #endregion
+
+        #region READ
+        public async Task<IEnumerable<Game>> GetGames(GameSearch searchParams)
+        {
+            try
+            {
+                return await gameRepository.GetGames(searchParams);
             }
             catch (Exception e)
             {
                 logger.LogError(e, "Error retrieving all games");
+                throw e;
+            }
+        }
+
+        public async Task<IEnumerable<Game>> GetFeaturedGames()
+        {
+            try
+            {
+                return await gameRepository.GetFeaturedGames();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error retrieving featured games");
                 throw e;
             }
         }
@@ -109,9 +166,47 @@ namespace Gamestak.Services
                 throw e;
             }
         }
+
+        public async Task<IEnumerable<Category>> GetCategories()
+        {
+            try
+            {
+                return await gameRepository.GetCategories();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error retrieving categories list");
+                throw e;
+            }
+        }
+
+        public async Task<IEnumerable<Feature>> GetFeatures()
+        {
+            try
+            {
+                return await gameRepository.GetFeatures();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error retrieving features list");
+                throw e;
+            }
+        }
         #endregion
 
         #region DELETE
+        public async Task<int> UnfeatureGame(int gameId)
+        {
+            try
+            {
+                return await gameRepository.UnfeatureGame(gameId);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error unfeaturing game");
+                throw e;
+            }
+        }
         #endregion
     }
 }

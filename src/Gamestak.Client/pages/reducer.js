@@ -1,5 +1,7 @@
-import { handleActions } from 'redux-actions';
+import { combineReducers } from 'redux';
 
-const INITIAL_STATE = {};
+import StoreReducer from './Store/modules/reducer';
 
-export default handleActions({}, INITIAL_STATE);
+export default combineReducers({
+  store: StoreReducer,
+});
