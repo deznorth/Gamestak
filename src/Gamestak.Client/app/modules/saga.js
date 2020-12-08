@@ -8,6 +8,7 @@ const log = debug('saga:shared');
 function* fetchCategories() {
   try {
     const result = yield call(Proxies.getCategories);
+    log('fetched categories', result.data);
     yield put(actions.fetchedCategories(result.data));
   } catch(err) {
     log('Error fetching categories', err);
@@ -17,6 +18,7 @@ function* fetchCategories() {
 function* fetchFeatures() {
   try {
     const result = yield call(Proxies.getFeatures);
+    log('fetched features', result.data);
     yield put(actions.fetchedFeatures(result.data));
   } catch(err) {
     log('Error fetching features', err);

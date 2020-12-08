@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // GET
-export const getGames = async () => await axios.get('/api/game');
+export const getGames = async filters => await axios.get('/api/game', { params: filters });
+
 export const getFeaturedGames = async () => await axios.get('/api/game/featured');
 
 // POST

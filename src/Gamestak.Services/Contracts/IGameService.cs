@@ -13,7 +13,7 @@ namespace Gamestak.Services.Contracts
         #endregion
 
         #region READ
-        public Task<IEnumerable<Game>> GetGames();
+        public Task<IEnumerable<Game>> GetGames(GameSearch searchParams);
         public Task<IEnumerable<Game>> GetFeaturedGames();
         public Task<Game> GetGameByID(int id);
         public Task<IEnumerable<Game>> GetGamesByID(IEnumerable<int> ids);

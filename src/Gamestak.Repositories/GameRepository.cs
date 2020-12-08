@@ -160,12 +160,44 @@ namespace Gamestak.Repositories
 
         #region READ
         // Get all games and populate their "ImageCollection" field
-        public Task<List<Game>> GetGames()
+        public Task<List<Game>> GetGames(GameSearch searchParams)
         {
             return gamestakDb.Use(async conn =>
             {
+                var whereClause = "";
+                var orderbyClause = "ORDER BY ";
+
+                if (searchParams.SearchTerm != "")
+                {
+                    whereClause = @$"WHERE Title LIKE '%{searchParams.SearchTerm}%'";
+                }
+
+                switch (searchParams.SortBy)
+                {
+                    case SortType.NewerFirst:
+                        orderbyClause += "ReleaseDate DESC";
+                        break;
+                    case SortType.OlderFirst:
+                        orderbyClause += "ReleaseDate ASC";
+                        break;
+                    case SortType.AZ:
+                        orderbyClause += "Title ASC";
+                        break;
+                    case SortType.ZA:
+                        orderbyClause += "Title DESC";
+                        break;
+                    case SortType.PriceLowToHigh:
+                        orderbyClause += "Price ASC";
+                        break;
+                    case SortType.PriceHighToLow:
+                        orderbyClause += "Price DESC";
+                        break;
+                }
+
                 var query = @$"
                     SELECT * FROM {DbTables.Games}
+                    {whereClause}
+                    {orderbyClause}
                 ";
 
                 var games = (await conn.QueryAsync<Game>(query)).ToList();

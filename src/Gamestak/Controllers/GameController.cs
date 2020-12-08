@@ -82,11 +82,11 @@ namespace Gamestak.Controllers
 
         #region READ
         [HttpGet]
-        public async Task<IActionResult> GetGames()
+        public async Task<IActionResult> GetGames([FromQuery] GameSearch searchParams)
         {
             try
             {
-                var result = await gameService.GetGames();
+                var result = await gameService.GetGames(searchParams);
                 return Ok(result);
             }
             catch (Exception e)

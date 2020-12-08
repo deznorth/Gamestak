@@ -1,0 +1,14 @@
+.gs-filer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+
+  &__select {
+    max-width: 17rem;
+  }
+
+  &__search {
+    max-width: 25rem;
+  }
+}

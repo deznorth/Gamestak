@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 
 import { FeaturedGamesCarousel } from 'components/FeaturedGamesCarousel';
 import { GamesGrid } from 'components/GamesGrid';
+import { FiltersBar } from 'components/FiltersBar';
 import { FiltersSideBar } from 'components/FiltersSideBar';
 
 import selectors from './modules/selectors';
@@ -24,11 +25,19 @@ const Store = props => {
     props.init();
   }, []);
 
+  const handleSearch = ({ searchTerm, sortBy }) => {
+    props.searchGames({
+      searchTerm,
+      sortBy,
+    });
+  };
+
   return (
     <Container className="gs-store" fluid>
       {
         featuredGames && <FeaturedGamesCarousel games={featuredGames} />
       }
+      <FiltersBar searchHandler={handleSearch} />
       <div className="d-flex">
         <GamesGrid className="flex-grow-1" games={games} />
         <FiltersSideBar
@@ -55,4 +64,5 @@ export default connect(state => {
 }, {
   init: actions.initialize,
   fetchGames: actions.fetchingGames,
+  searchGames: actions.searchingGames,
 })(Store);

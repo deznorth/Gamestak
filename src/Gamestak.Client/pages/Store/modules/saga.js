@@ -1,9 +1,20 @@
-import { put, call, all, takeEvery, takeLatest } from "redux-saga/effects";
+import { put, call, all, takeEvery, debounce } from "redux-saga/effects";
 import debug from 'debug';
 import Proxies from 'util/proxies';
 import * as actions from './actions';
 
 const log = debug('saga:store');
+
+function* searchGames({ payload }) {
+  try {
+    log('searching games', payload);
+    const result = yield call(Proxies.getGames, payload);
+    log('searched games', result.data);
+    yield put(actions.fetchedGames(result.data));
+  } catch(err) {
+    log('Error searching games', err);
+  }
+}
 
 function* fetchFeatured() {
   try {
@@ -15,26 +26,15 @@ function* fetchFeatured() {
   }
 }
 
-function* fetchGames() {
-  try {
-    const result = yield call(Proxies.getGames);
-    log('fetched games', result.data);
-    yield put(actions.fetchedGames(result.data));
-  } catch(err) {
-    log('Error fetching games', err);
-  }
-}
-
 function* initialize() {
   log('Initializing');
   yield all([
     put(actions.fetchingFeatured()),
-    put(actions.fetchingGames()),
   ]);
 }
 
 export default [
+  debounce(500, actions.searchingGames, searchGames),
   takeEvery(actions.fetchingFeatured, fetchFeatured),
-  takeLatest(actions.fetchingGames, fetchGames),
   takeEvery(actions.initialize, initialize),
 ];

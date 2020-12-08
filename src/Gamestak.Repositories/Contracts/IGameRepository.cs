@@ -16,7 +16,7 @@ namespace Gamestak.Repositories.Contracts
         #endregion
 
         #region READ
-        public Task<List<Game>> GetGames();
+        public Task<List<Game>> GetGames(GameSearch searchParams);
         public Task<List<Game>> GetFeaturedGames();
         public Task<Game> GetGameByID(int id);
         public Task<List<Game>> GetGamesByID(IEnumerable<int> ids);

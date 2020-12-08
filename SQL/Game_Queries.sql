@@ -68,21 +68,26 @@ DECLARE @GameImageUrl varchar(128) = 'https://cdn.images.express.co.uk/img/dynam
 --SELECT * FROM GameImages WHERE GameID = @GameId
 
 -- CREATE Feature a game
-IF NOT EXISTS (SELECT GameID FROM FeaturedGames WHERE GameID = @GameId)
-BEGIN
-	INSERT INTO FeaturedGames (GameID)
-	VALUES (@GameId)
-END
+--IF NOT EXISTS (SELECT GameID FROM FeaturedGames WHERE GameID = @GameId)
+--BEGIN
+--	INSERT INTO FeaturedGames (GameID)
+--	VALUES (@GameId)
+--END
 
 -- DELETE Unfeature a game
-IF EXISTS (SELECT GameID FROM FeaturedGames WHERE GameID = @GameId)
-BEGIN
-	DELETE FROM FeaturedGames
-	WHERE GameID = @GameId
-END
+--IF EXISTS (SELECT GameID FROM FeaturedGames WHERE GameID = @GameId)
+--BEGIN
+--	DELETE FROM FeaturedGames
+--	WHERE GameID = @GameId
+--END
 
 -- READ get all featured games
-SELECT * FROM Games g JOIN FeaturedGames fg ON g.GameID = fg.GameID 
+--SELECT * FROM Games g JOIN FeaturedGames fg ON g.GameID = fg.GameID 
 
 -- READ get all games
+--SELECT * FROM Games
+
+-- READ search all games
 SELECT * FROM Games
+WHERE Title LIKE '%f%'
+ORDER BY Title ASC

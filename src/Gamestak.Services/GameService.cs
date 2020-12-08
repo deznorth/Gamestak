@@ -89,11 +89,11 @@ namespace Gamestak.Services
         #endregion
 
         #region READ
-        public async Task<IEnumerable<Game>> GetGames()
+        public async Task<IEnumerable<Game>> GetGames(GameSearch searchParams)
         {
             try
             {
-                return await gameRepository.GetGames();
+                return await gameRepository.GetGames(searchParams);
             }
             catch (Exception e)
             {
