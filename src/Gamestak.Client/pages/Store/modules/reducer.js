@@ -12,6 +12,10 @@ const INITIAL_STATE = {
 };
 
 export default handleActions({
+  [actions.fetchedFeatured]: (state, { payload }) => ({
+    ...state,
+    featuredGames: payload,
+  }),
   [actions.fetchedGames]: (state, { payload }) => ({
     ...state,
     games: payload,

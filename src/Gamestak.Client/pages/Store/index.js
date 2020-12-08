@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 
+import { FeaturedGamesCarousel } from 'components/FeaturedGamesCarousel';
 import { GamesGrid } from 'components/GamesGrid';
 import { FiltersSideBar } from 'components/FiltersSideBar';
 
@@ -19,6 +20,7 @@ const Store = props => {
 
   const {
     games,
+    featuredGames,
   } = props.state;
 
   useEffect(() => {
@@ -27,8 +29,7 @@ const Store = props => {
 
   return (
     <Container className="gs-store" fluid>
-      <h1>Hello, World!</h1>
-      <hr />
+      <FeaturedGamesCarousel games={featuredGames} />
       <div className="d-flex">
         <GamesGrid className="flex-grow-1" games={games} />
         <FiltersSideBar

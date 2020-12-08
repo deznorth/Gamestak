@@ -24,7 +24,7 @@ function* fetchFeatures() {
 }
 
 function* initialize() {
-  log('initialize!');
+  log('Initializing');
   yield all([
     put(actions.fetchingCategories()),
     put(actions.fetchingFeatures()),
