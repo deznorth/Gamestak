@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 
 import { FeaturedGamesCarousel } from 'components/FeaturedGamesCarousel';
@@ -16,12 +16,9 @@ const Store = props => {
   const {
     categories,
     features,
-  } = props;
-
-  const {
-    games,
     featuredGames,
-  } = props.state;
+    games,
+  } = props;
 
   useEffect(() => {
     props.init();
@@ -29,7 +26,9 @@ const Store = props => {
 
   return (
     <Container className="gs-store" fluid>
-      <FeaturedGamesCarousel games={featuredGames} />
+      {
+        featuredGames && <FeaturedGamesCarousel games={featuredGames} />
+      }
       <div className="d-flex">
         <GamesGrid className="flex-grow-1" games={games} />
         <FiltersSideBar
@@ -42,11 +41,18 @@ const Store = props => {
   );
 };
 
-export default connect(state => ({
-  state: selectors.selectPageState(state, 'store'),
-  categories: selectors.selectCategories(state),
-  features: selectors.selectFeatures(state),
-}), {
+export default connect(state => {
+  const pageState = selectors.selectPageState(state, 'store');
+  const categories = selectors.selectCategories(state);
+  const features = selectors.selectFeatures(state);
+  return {
+    state,
+    featuredGames: pageState.featuredGames,
+    games: pageState.games,
+    categories,
+    features,
+  };
+}, {
   init: actions.initialize,
   fetchGames: actions.fetchingGames,
 })(Store);

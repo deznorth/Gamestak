@@ -8,6 +8,7 @@ const log = debug('saga:store');
 function* fetchFeatured() {
   try {
     const result = yield call(Proxies.getFeaturedGames);
+    log('fetched featured games', result.data);
     yield put(actions.fetchedFeatured(result.data));
   } catch(err) {
     log('Error fetching featured games', err);
@@ -17,6 +18,7 @@ function* fetchFeatured() {
 function* fetchGames() {
   try {
     const result = yield call(Proxies.getGames);
+    log('fetched games', result.data);
     yield put(actions.fetchedGames(result.data));
   } catch(err) {
     log('Error fetching games', err);

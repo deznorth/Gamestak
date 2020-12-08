@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import NavBar from 'components/NavBar';
 import * as actions from '../modules/actions';
 
@@ -8,11 +8,12 @@ import './style.scss';
 const Layout = props => {
   const {
     children,
-    initialize
   } = props;
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    initialize();
+    dispatch(actions.initialize());
   }, []);
 
   return (
@@ -25,7 +26,4 @@ const Layout = props => {
   );
 };
 
-export default connect(state => ({
-}), {
-  initialize: actions.initialize,
-})(Layout);
+export default Layout;
