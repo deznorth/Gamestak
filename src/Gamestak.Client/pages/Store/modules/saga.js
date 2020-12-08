@@ -10,7 +10,7 @@ function* searchGames({ payload }) {
     log('searching games', payload);
     const result = yield call(Proxies.getGames, payload);
     log('searched games', result.data);
-    yield put(actions.fetchedGames(result.data));
+    yield put(actions.searchedGames(result.data));
   } catch(err) {
     log('Error searching games', err);
   }

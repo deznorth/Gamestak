@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 
@@ -15,6 +15,9 @@ import './style.scss';
 const Store = props => {
 
   const {
+    isLoadingFeatured,
+    isLoadingGames,
+    isLoadingFilters,
     categories,
     features,
     featuredGames,
@@ -46,13 +49,14 @@ const Store = props => {
   return (
     <Container className="gs-store" fluid>
       {
-        featuredGames && <FeaturedGamesCarousel games={featuredGames} />
+        featuredGames && <FeaturedGamesCarousel games={featuredGames} loading={isLoadingFeatured} />
       }
       <FiltersBar searchTerm={searchTerm} sortBy={sortBy} updateHandler={searchParamUpdateHandler} />
       <div className="d-flex">
-        <GamesGrid className="flex-grow-1" games={games} />
+        <GamesGrid className="flex-grow-1" games={games} loading={isLoadingGames} />
         <FiltersSideBar
           className="pl-3 flex-grow-1"
+          loading={isLoadingFilters}
           categories={categories}
           features={features}
           selectedCategories={selectedCategories}
@@ -66,9 +70,15 @@ const Store = props => {
 
 export default connect(state => {
   const pageState = selectors.selectPageState(state, 'store');
+  const isLoadingFeatured = pageState.loadingFeatured;
+  const isLoadingGames = pageState.loadingGames;
+  const isLoadingFilters = selectors.selectIsLoadingFilters(state);
   const categories = selectors.selectCategories(state);
   const features = selectors.selectFeatures(state);
   return {
+    isLoadingFeatured,
+    isLoadingGames,
+    isLoadingFilters,
     featuredGames: pageState.featuredGames,
     games: pageState.games,
     categories,

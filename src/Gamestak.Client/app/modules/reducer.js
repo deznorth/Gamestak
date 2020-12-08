@@ -2,17 +2,20 @@ import { handleActions } from 'redux-actions';
 import * as actions from './actions';
 
 const INITIAL_STATE = {
+  loadingFilters: false,
   categories: [],
   features: [],
 };
 
 export default handleActions({
-  [actions.fetchedCategories]: (state, { payload }) => ({
+  [actions.fetchingFilters]: state => ({
     ...state,
-    categories: payload,
+    loadingFilters: true,
   }),
-  [actions.fetchedFeatures]: (state, { payload }) => ({
+  [actions.fetchedFilters]: (state, { payload }) => ({
     ...state,
-    features: payload,
+    loadingFilters: false,
+    categories: payload.categories,
+    features: payload.features,
   }),
 }, INITIAL_STATE);
