@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
+import { Loader } from '../Loader';
 import { GameCard } from '../GameCard';
 
 export const GamesGrid = props => {
@@ -12,6 +14,7 @@ export const GamesGrid = props => {
     className,
     rowSize,
     games,
+    loading,
   } = props;
 
   const cn = classNames(
@@ -28,7 +31,10 @@ export const GamesGrid = props => {
   return (
     <Container className={cn}>
       {
-        gameRows.map((gr, i) => {
+        loading && <Loader />
+      }
+      {
+        !loading && gameRows.map((gr, i) => {
           const cols = gr.map(g => (
             <Col key={g.gameID}>
               <GameCard {...g} />
@@ -56,10 +62,12 @@ GamesGrid.defaultProps = {
   className: '',
   rowSize: 4,
   games: [],
+  loading: false,
 };
 
 GamesGrid.propTypes = {
   className: PropTypes.string,
   rowSize: PropTypes.number,
   games: PropTypes.array,
+  loading: PropTypes.bool,
 };

@@ -5,36 +5,33 @@ import * as actions from './actions';
 
 const log = debug('saga:shared');
 
-function* fetchCategories() {
+function* fetchFilters() {
   try {
-    const result = yield call(Proxies.getCategories);
-    log('fetched categories', result.data);
-    yield put(actions.fetchedCategories(result.data));
-  } catch(err) {
-    log('Error fetching categories', err);
-  }
-}
+    const [categories, features] = yield all([
+      call(Proxies.getCategories),
+      call(Proxies.getFeatures),
+    ]);
 
-function* fetchFeatures() {
-  try {
-    const result = yield call(Proxies.getFeatures);
-    log('fetched features', result.data);
-    yield put(actions.fetchedFeatures(result.data));
+    const result = {
+      categories: categories.data,
+      features: features.data,
+    };
+
+    log('fetched filters', result);
+    yield put(actions.fetchedFilters(result));
   } catch(err) {
-    log('Error fetching features', err);
+    log('Error fetching filters', err);
   }
 }
 
 function* initialize() {
   log('Initializing');
   yield all([
-    put(actions.fetchingCategories()),
-    put(actions.fetchingFeatures()),
+    put(actions.fetchingFilters()),
   ]);
 }
 
 export default [
-  takeEvery(actions.fetchingCategories, fetchCategories),
-  takeEvery(actions.fetchingFeatures, fetchFeatures),
+  takeEvery(actions.fetchingFilters, fetchFilters),
   takeEvery(actions.initialize, initialize),
 ];

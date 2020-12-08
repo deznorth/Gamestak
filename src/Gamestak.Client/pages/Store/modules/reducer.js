@@ -2,6 +2,8 @@ import { handleActions } from 'redux-actions';
 import * as actions from './actions';
 
 const INITIAL_STATE = {
+  loadingGames: false,
+  loadingFeatured: false,
   games: [],
   featuredGames: [],
   searchParams: {
@@ -13,12 +15,22 @@ const INITIAL_STATE = {
 };
 
 export default handleActions({
+  [actions.fetchingFeatured]: state => ({
+    ...state,
+    loadingFeatured: true,
+  }),
   [actions.fetchedFeatured]: (state, { payload }) => ({
     ...state,
+    loadingFeatured: false,
     featuredGames: payload,
   }),
-  [actions.fetchedGames]: (state, { payload }) => ({
+  [actions.searchingGames]: state => ({
     ...state,
+    loadingGames: true,
+  }),
+  [actions.searchedGames]: (state, { payload }) => ({
+    ...state,
+    loadingGames: false,
     games: payload,
   }),
   [actions.updateSearchParams]: (state, { payload }) => ({

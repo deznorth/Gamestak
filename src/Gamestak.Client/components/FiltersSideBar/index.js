@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
 import { element } from 'util/bem';
+import { Loader } from '../Loader';
 
 import './style.scss';
 
@@ -18,6 +19,7 @@ export const FiltersSideBar = props => {
     selectedCategories,
     selectedFeatures,
     updateHandler,
+    loading,
   } = props;
 
   const cb = 'gs-filters-sidebar';
@@ -58,70 +60,76 @@ export const FiltersSideBar = props => {
         <h2>Filters</h2>
         <hr />
       </div>
-      <Accordion defaultActiveKey="0">
-        <Card className={element(cb, 'filters-section')}>
-          <Accordion.Toggle
-            className="d-flex justify-content-between"
-            as={Card.Header}
-            eventKey="0"
-          >
-            <h6>CATEGORIES</h6>
-            <CaretDownFill />
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="0">
-            <Card.Body>
-              {
-                categories.map((c, i) => (
-                  <Button
-                    key={c.categoryID}
-                    className={`text-left ${isSelectedCategory(c.categoryID) ? 'active-filter' : ''}`}
-                    variant="text"
-                    onClick={() => categoryToggleHangler(c.categoryID)}
-                    block
-                  >
-                    {c.categoryName}
-                  </Button>
-                ))
-              }
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion>
-      <Accordion defaultActiveKey="0">
-        <Card className={element(cb, 'filters-section')}>
-          <Accordion.Toggle
-            className="d-flex justify-content-between"
-            as={Card.Header}
-            eventKey="0"
-          >
-            <h6>FEATURES</h6>
-            <CaretDownFill />
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="0">
-            <Card.Body>
-              {
-                features.map((f, i) => (
-                  <Button
-                    key={f.featureID}
-                    className={`text-left ${isSelectedFeature(f.featureID) ? 'active-filter' : ''}`}
-                    variant="text"
-                    onClick={() => featureToggleHangler(f.featureID)}
-                    block
-                  >
-                    {f.featureName}
-                  </Button>
-                ))
-              }
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion>
+      { loading && <Loader /> }
+      { !loading && (
+        <>
+          <Accordion defaultActiveKey="0">
+            <Card className={element(cb, 'filters-section')}>
+              <Accordion.Toggle
+                className="d-flex justify-content-between"
+                as={Card.Header}
+                eventKey="0"
+              >
+                <h6>CATEGORIES</h6>
+                <CaretDownFill />
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  {
+                    categories.map((c, i) => (
+                      <Button
+                        key={c.categoryID}
+                        className={`text-left ${isSelectedCategory(c.categoryID) ? 'active-filter' : ''}`}
+                        variant="text"
+                        onClick={() => categoryToggleHangler(c.categoryID)}
+                        block
+                      >
+                        {c.categoryName}
+                      </Button>
+                    ))
+                  }
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+          <Accordion defaultActiveKey="0">
+            <Card className={element(cb, 'filters-section')}>
+              <Accordion.Toggle
+                className="d-flex justify-content-between"
+                as={Card.Header}
+                eventKey="0"
+              >
+                <h6>FEATURES</h6>
+                <CaretDownFill />
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  {
+                    features.map((f, i) => (
+                      <Button
+                        key={f.featureID}
+                        className={`text-left ${isSelectedFeature(f.featureID) ? 'active-filter' : ''}`}
+                        variant="text"
+                        onClick={() => featureToggleHangler(f.featureID)}
+                        block
+                      >
+                        {f.featureName}
+                      </Button>
+                    ))
+                  }
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+        </>
+      )}
     </div>
   );
 };
 
 FiltersSideBar.defaultProps = {
   className: '',
+  loading: false,
   categories: [],
   features: [],
   selectedCategories: [],
@@ -132,6 +140,7 @@ FiltersSideBar.defaultProps = {
 
 FiltersSideBar.propTypes = {
   className: PropTypes.string,
+  loading: PropTypes.bool,
   categories: PropTypes.arrayOf(PropTypes.shape({
     categoryID: PropTypes.number.isRequired,
     categoryName: PropTypes.string.isRequired,
