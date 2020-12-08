@@ -17,6 +17,8 @@ namespace Gamestak.Services.Contracts
         public Task<IEnumerable<Game>> GetGamesByID(IEnumerable<int> ids);
         public Task<IEnumerable<GameImage>> GetImagesByGameID(int id);
         public Task<GameImage> GetImageByID(int id);
+        public Task<IEnumerable<Category>> GetCategories();
+        public Task<IEnumerable<Feature>> GetFeatures();
         #endregion
 
         #region UPDATE

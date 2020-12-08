@@ -2,8 +2,6 @@ import { handleActions } from 'redux-actions';
 import * as actions from './actions';
 
 const INITIAL_STATE = {
-  categories: [],
-  features: [],
   games: [],
   featuredGames: [],
   sortOptions: [],

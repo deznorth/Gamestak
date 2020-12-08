@@ -31,8 +31,12 @@ namespace Gamestak.Services
             {
                 var savedGame = await gameRepository.SaveGame(game);
                 var savedImages = await gameRepository.SaveGameImages(savedGame.GameID, game.ImageCollection);
+                var savedCategories = await gameRepository.AssignGameCategories(savedGame.GameID, game.Categories);
+                var savedFeatures = await gameRepository.AssignGameFeatures(savedGame.GameID, game.Features);
 
                 savedGame.ImageCollection = savedImages;
+                savedGame.Categories = savedCategories;
+                savedGame.Features = savedFeatures;
 
                 return savedGame;
             }
@@ -54,10 +58,7 @@ namespace Gamestak.Services
                 {
                     try
                     {
-                        var savedGame = await gameRepository.SaveGame(game);
-                        var savedImages = await gameRepository.SaveGameImages(savedGame.GameID, game.ImageCollection);
-
-                        savedGame.ImageCollection = savedImages;
+                        var savedGame = await SaveGame(game);
 
                         gamesResult.Add(savedGame);
                     } catch (Exception e)
@@ -137,6 +138,32 @@ namespace Gamestak.Services
             catch (Exception e)
             {
                 logger.LogError(e, "Error retrieving a game image by id");
+                throw e;
+            }
+        }
+
+        public async Task<IEnumerable<Category>> GetCategories()
+        {
+            try
+            {
+                return await gameRepository.GetCategories();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error retrieving categories list");
+                throw e;
+            }
+        }
+
+        public async Task<IEnumerable<Feature>> GetFeatures()
+        {
+            try
+            {
+                return await gameRepository.GetFeatures();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error retrieving features list");
                 throw e;
             }
         }

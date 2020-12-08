@@ -42,7 +42,7 @@ export const FiltersSideBar = props => {
           <Accordion.Collapse eventKey="0">
             <Card.Body>
               {
-                categories.map((c, i) => <p key={i}>{c}</p>)
+                categories.map((c, i) => <p key={c.categoryID}>{c.categoryName}</p>)
               }
             </Card.Body>
           </Accordion.Collapse>
@@ -61,7 +61,7 @@ export const FiltersSideBar = props => {
           <Accordion.Collapse eventKey="0">
             <Card.Body>
               {
-                features.map((c, i) => <p key={i}>{c}</p>)
+                features.map((f, i) => <p key={f.featureID}>{f.featureName}</p>)
               }
             </Card.Body>
           </Accordion.Collapse>
@@ -79,6 +79,12 @@ FiltersSideBar.defaultProps = {
 
 FiltersSideBar.propTypes = {
   className: PropTypes.string,
-  categories: PropTypes.arrayOf(PropTypes.string),
-  features: PropTypes.arrayOf(PropTypes.string),
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    categoryID: PropTypes.number.isRequired,
+    categoryName: PropTypes.string.isRequired,
+  })),
+  features: PropTypes.arrayOf(PropTypes.shape({
+    featureID: PropTypes.number.isRequired,
+    featureName: PropTypes.string.isRequired,
+  })),
 };

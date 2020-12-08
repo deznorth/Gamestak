@@ -132,6 +132,34 @@ namespace Gamestak.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+        [HttpGet("categories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            try
+            {
+                var result = await gameService.GetCategories();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("features")]
+        public async Task<IActionResult> GetFeatures()
+        {
+            try
+            {
+                var result = await gameService.GetFeatures();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
         #endregion
 
         #region UPDATE

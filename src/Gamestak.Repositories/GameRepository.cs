@@ -81,6 +81,58 @@ namespace Gamestak.Repositories
                 return result;
             });
         }
+
+        public Task<List<Category>> AssignGameCategories(int gameId, List<int> categoryIds)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF NOT EXISTS (SELECT * FROM {DbTables.CategoryAssignments} WHERE GameID = @GameID AND CategoryID = @CategoryID)
+                    BEGIN
+	                    INSERT INTO {DbTables.CategoryAssignments} (GameID, CategoryID)
+	                    VALUES (@GameID, @CategoryID)
+                    END
+                ";
+
+                var parameters = categoryIds.Select(categoryID => new
+                {
+                    GameId = gameId,
+                    CategoryID = categoryID
+                }).ToArray();
+
+                await conn.ExecuteAsync(query, parameters);
+
+                var result = await GetCategoriesByGameID(gameId);
+
+                return result;
+            });
+        }
+
+        public Task<List<Feature>> AssignGameFeatures(int gameId, List<int> featureIds)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF NOT EXISTS (SELECT * FROM {DbTables.FeatureAssignments} WHERE GameID = @GameID AND FeatureID = @FeatureID)
+                    BEGIN
+	                    INSERT INTO {DbTables.FeatureAssignments} (GameID, FeatureID)
+	                    VALUES (@GameID, @FeatureID)
+                    END
+                ";
+
+                var parameters = featureIds.Select(featureID => new
+                {
+                    GameId = gameId,
+                    FeatureID = featureID
+                }).ToArray();
+
+                await conn.ExecuteAsync(query, parameters);
+
+                var result = await GetFeaturesByGameID(gameId);
+
+                return result;
+            });
+        }
         #endregion
 
         #region READ
@@ -150,6 +202,70 @@ namespace Gamestak.Repositories
                 ";
 
                 var result = (await conn.QueryAsync<GameImage>(query, new { ImageId = id })).FirstOrDefault();
+
+                return result;
+            });
+        }
+
+        public Task<List<Category>> GetCategories()
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT * FROM {DbTables.Categories}
+                ";
+
+                var result = (await conn.QueryAsync<Category>(query)).ToList();
+
+                return result;
+            });
+        }
+
+        public Task<List<Category>> GetCategoriesByGameID(int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT ca.CategoryID, c.CategoryName
+                    FROM {DbTables.CategoryAssignments} ca
+                    JOIN {DbTables.Categories} c
+                    ON c.CategoryID = ca.CategoryID
+                    WHERE ca.GameID = @GameID
+                ";
+
+                var result = (await conn.QueryAsync<Category>(query, new { GameId = gameId })).ToList();
+
+                return result;
+            });
+        }
+
+        public Task<List<Feature>> GetFeatures()
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT * FROM {DbTables.Features}
+                ";
+
+                var result = (await conn.QueryAsync<Feature>(query)).ToList();
+
+                return result;
+            });
+        }
+
+        public Task<List<Feature>> GetFeaturesByGameID(int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT fa.FeatureID, f.FeatureName
+                    FROM {DbTables.FeatureAssignments} fa
+                    JOIN {DbTables.Features} f
+                    ON f.FeatureID = fa.FeatureID
+                    WHERE fa.GameID = @GameID
+                ";
+
+                var result = (await conn.QueryAsync<Feature>(query, new { GameId = gameId })).ToList();
 
                 return result;
             });

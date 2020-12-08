@@ -1,7 +1,7 @@
 USE gamestak
 GO
 
-DECLARE @GameId int = 2;
+DECLARE @GameId int = 1;
 DECLARE @Price float = 14.99;
 DECLARE @Title varchar(50) = 'Crash Bandicoot: Insane Trilogy';
 DECLARE @Description varchar(255) = 'This is the description for some game';

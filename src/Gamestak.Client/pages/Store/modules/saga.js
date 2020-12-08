@@ -1,13 +1,13 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { put, call, all, takeEvery, takeLatest } from "redux-saga/effects";
 import debug from 'debug';
+import Proxies from 'util/proxies';
 import * as actions from './actions';
-import * as proxies from './proxies';
 
 const log = debug('saga:store');
 
 function* fetchGames() {
   try {
-    const result = yield proxies.getGames();
+    const result = yield call(Proxies.getGames);
     yield put(actions.fetchedGames(result.data));
   } catch(err) {
     log('Error fetching games', err);
@@ -16,10 +16,12 @@ function* fetchGames() {
 
 function* initialize() {
   log('initialize!');
-  yield put(actions.fetchingGames());
+  yield all([
+    put(actions.fetchingGames()),
+  ]);
 }
 
 export default [
-  takeEvery(actions.fetchingGames, fetchGames),
+  takeLatest(actions.fetchingGames, fetchGames),
   takeEvery(actions.initialize, initialize),
 ];

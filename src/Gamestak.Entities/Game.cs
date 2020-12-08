@@ -21,5 +21,7 @@ namespace Gamestak.Entities
 
         // Metadata
         public DateTime ReleaseDate { get; set; } = DateTime.UtcNow;
+        public List<Category> Categories { get; set; }
+        public List<Feature> Features { get; set; }
     }
 }

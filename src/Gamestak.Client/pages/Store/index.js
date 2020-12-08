@@ -10,50 +10,16 @@ import * as actions from './modules/actions';
 
 import './style.scss';
 
-const getGamesList = count => {
-  const games = [];
-
-  for(let i = 0; i < count; i++) {
-    const gameID = i + 1;
-    games.push({
-      gameID,
-      title: `Game ${gameID}`,
-      publisher: `Publisher ${gameID}`,
-      description: `This is game ${gameID}`,
-      price: 49.99,
-      discountPrice: 19.99,
-      discountRate: 0.4,
-      thumbnailUrl: 'https://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-masterCatalog/en_US/dw1ffc694a/images/large/5e849c6c5cdf9a21c0b4e731.jpg?sw=341&sh=450&sm=fit',
-      releaseDate: '2020-11-12T00:00:00',
-      isOnSale: Math.floor(Math.random() * 2) > 0,
-    });
-  }
-
-  return games;
-};
-
 const Store = props => {
+
+  const {
+    categories,
+    features,
+  } = props;
 
   const {
     games,
   } = props.state;
-
-  // const games = getGamesList(8);
-
-  const categories = [
-    'Action',
-    'Adventure',
-    'Racing',
-    'RPG',
-    'Shooter',
-    'Survival',
-  ];
-  const features = [
-    'Single Player',
-    'Multiplayer',
-    'Co-op',
-    'VR'
-  ];
 
   useEffect(() => {
     props.init();
@@ -77,6 +43,8 @@ const Store = props => {
 
 export default connect(state => ({
   state: selectors.selectPageState(state, 'store'),
+  categories: selectors.selectCategories(state),
+  features: selectors.selectFeatures(state),
 }), {
   init: actions.initialize,
   fetchGames: actions.fetchingGames,

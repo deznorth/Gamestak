@@ -10,6 +10,8 @@ namespace Gamestak.Repositories.Contracts
         public Task<Game> SaveGame(GameCreationRequest game);
         //public Task<GameImage> SaveGameImage(GameImage image);
         public Task<List<GameImage>> SaveGameImages(int gameId, List<string> images);
+        public Task<List<Category>> AssignGameCategories(int gameId, List<int> categoryIds);
+        public Task<List<Feature>> AssignGameFeatures(int gameId, List<int> featureIds);
         #endregion
 
         #region READ
@@ -18,6 +20,10 @@ namespace Gamestak.Repositories.Contracts
         public Task<List<Game>> GetGamesByID(IEnumerable<int> ids);
         public Task<GameImage> GetImageByID(int id);
         public Task<List<GameImage>> GetImagesByGameID(int id);
+        public Task<List<Category>> GetCategories();
+        public Task<List<Category>> GetCategoriesByGameID(int gameId);
+        public Task<List<Feature>> GetFeatures();
+        public Task<List<Feature>> GetFeaturesByGameID(int gameId);
         #endregion
 
         #region UPDATE
