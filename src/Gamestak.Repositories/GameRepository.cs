@@ -164,12 +164,28 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
+                var searchTermPresent = searchParams.SearchTerm != "";
+                var categoriesPresent = searchParams.Categories != null && searchParams.Categories.Count > 0;
+                var featuresPresent = searchParams.Features != null && searchParams.Features.Count > 0;
+
                 var whereClause = "";
                 var orderbyClause = "ORDER BY ";
 
-                if (searchParams.SearchTerm != "")
+                if (searchTermPresent || categoriesPresent || featuresPresent)
                 {
-                    whereClause = @$"WHERE Title LIKE '%{searchParams.SearchTerm}%'";
+                    whereClause = "WHERE";
+                }
+                if (searchTermPresent)
+                {
+                    whereClause += $@" Title LIKE '%{searchParams.SearchTerm}%'";
+                }
+                if (categoriesPresent)
+                {
+                    whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.CategoryAssignments} ca WHERE ca.GameID = g.GameID and CategoryID IN @CategoryIds)";
+                }
+                if (featuresPresent)
+                {
+                    whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.FeatureAssignments} fa WHERE fa.GameID = g.GameID and FeatureID IN @FeatureIds)";
                 }
 
                 switch (searchParams.SortBy)
@@ -195,12 +211,15 @@ namespace Gamestak.Repositories
                 }
 
                 var query = @$"
-                    SELECT * FROM {DbTables.Games}
+                    SELECT * FROM {DbTables.Games} g
                     {whereClause}
                     {orderbyClause}
                 ";
 
-                var games = (await conn.QueryAsync<Game>(query)).ToList();
+                var games = (await conn.QueryAsync<Game>(query, new {
+                    CategoryIds = searchParams.Categories,
+                    FeatureIds = searchParams.Features,
+                })).ToList();
 
                 return await PopulateGamesImages(games);
             });

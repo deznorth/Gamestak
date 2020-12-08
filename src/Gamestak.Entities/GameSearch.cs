@@ -6,8 +6,8 @@ namespace Gamestak.Entities
     {
         public string SearchTerm { get; set; }
         public SortType SortBy { get; set; }
-        public List<Category> Categories { get; set; }
-        public List<Feature> Features { get; set; }
+        public List<int> Categories { get; set; }
+        public List<int> Features { get; set; }
     }
 
     public enum SortType

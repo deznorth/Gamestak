@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 
@@ -19,31 +19,45 @@ const Store = props => {
     features,
     featuredGames,
     games,
+    searchParams: {
+      searchTerm,
+      sortBy,
+      categories: selectedCategories,
+      features: selectedFeatures,
+    },
+    updateSearchParams,
   } = props;
 
   useEffect(() => {
     props.init();
   }, []);
 
-  const handleSearch = ({ searchTerm, sortBy }) => {
+  useEffect(() => {
     props.searchGames({
       searchTerm,
-      sortBy,
+      sortBy: parseInt(sortBy), // Ensure this is always an int
+      categories: selectedCategories,
+      features: selectedFeatures,
     });
-  };
+  }, [searchTerm, sortBy, JSON.stringify(selectedCategories), JSON.stringify(selectedFeatures)]);
+
+  const searchParamUpdateHandler = (param, value) => updateSearchParams({ param, value });
 
   return (
     <Container className="gs-store" fluid>
       {
         featuredGames && <FeaturedGamesCarousel games={featuredGames} />
       }
-      <FiltersBar searchHandler={handleSearch} />
+      <FiltersBar searchTerm={searchTerm} sortBy={sortBy} updateHandler={searchParamUpdateHandler} />
       <div className="d-flex">
         <GamesGrid className="flex-grow-1" games={games} />
         <FiltersSideBar
           className="pl-3 flex-grow-1"
           categories={categories}
           features={features}
+          selectedCategories={selectedCategories}
+          selectedFeatures={selectedFeatures}
+          updateHandler={searchParamUpdateHandler}
         />
       </div>
     </Container>
@@ -55,14 +69,15 @@ export default connect(state => {
   const categories = selectors.selectCategories(state);
   const features = selectors.selectFeatures(state);
   return {
-    state,
     featuredGames: pageState.featuredGames,
     games: pageState.games,
     categories,
     features,
+    searchParams: pageState.searchParams,
   };
 }, {
   init: actions.initialize,
   fetchGames: actions.fetchingGames,
   searchGames: actions.searchingGames,
+  updateSearchParams: actions.updateSearchParams,
 })(Store);

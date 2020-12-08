@@ -81,8 +81,8 @@ namespace Gamestak.Controllers
         #endregion
 
         #region READ
-        [HttpGet]
-        public async Task<IActionResult> GetGames([FromQuery] GameSearch searchParams)
+        [HttpPost("search")]
+        public async Task<IActionResult> GetGames([FromBody] GameSearch searchParams)
         {
             try
             {

@@ -7,6 +7,7 @@ const makeAction = action => createAction(`${base}${action}`);
 export const fetchedFeatured = makeAction('FETCHED_FEATURED');
 export const fetchedGames = makeAction('FETCHED_GAMES');
 export const searchedGames = makeAction('SEARCHED_GAMES');
+export const updateSearchParams = makeAction('UPDATED_SEARCH_PARAMS');
 
 // Saga-only actions
 export const initialize = makeAction('INITIALIZE');
