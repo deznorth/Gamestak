@@ -60,19 +60,33 @@ namespace Gamestak.Repositories
         {
             return gamestakDb.Use(async conn =>
             {
+                var valueClauses = String.Join(" ", images.Select((url, idx) =>
+                {
+                    if (idx < images.Count - 1)
+                        return $@"({gameId}, '{url}'),";
+                    else
+                        return $@"({gameId}, '{url}');";
+                }));
+
                 var query = @$"
-                    IF NOT EXISTS (SELECT GameID FROM {DbTables.GameImages} WHERE GameID = @GameId and [Url] = @GameImageUrl)
+                    IF NOT EXISTS (SELECT GameID FROM {DbTables.GameImages} WHERE GameID = @GameId and [Url] IN @Urls)
                     BEGIN
 	                    INSERT INTO {DbTables.GameImages}(GameID, [Url])
-	                    VALUES (@GameId, @GameImageUrl)
+	                    VALUES {valueClauses}
                     END
                 ";
 
-                var parameters = images.Select(i => new
+                //var parameters = images.Select(i => new
+                //{
+                //    GameId = gameId,
+                //    GameImageUrl = i
+                //}).ToArray();
+
+                var parameters = new
                 {
                     GameId = gameId,
-                    GameImageUrl = i
-                }).ToArray();
+                    Urls = images,
+                };
 
                 await conn.ExecuteAsync(query, parameters);
 
