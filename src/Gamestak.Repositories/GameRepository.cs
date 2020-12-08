@@ -76,12 +76,6 @@ namespace Gamestak.Repositories
                     END
                 ";
 
-                //var parameters = images.Select(i => new
-                //{
-                //    GameId = gameId,
-                //    GameImageUrl = i
-                //}).ToArray();
-
                 var parameters = new
                 {
                     GameId = gameId,
@@ -235,7 +229,9 @@ namespace Gamestak.Repositories
                     FeatureIds = searchParams.Features,
                 })).ToList();
 
-                return await PopulateGamesImages(games);
+                var gamesWithImages = await PopulateGamesImages(games);
+                
+                return await PopulateGamesFilters(gamesWithImages);
             });
         }
 
@@ -265,7 +261,8 @@ namespace Gamestak.Repositories
 
                 var game = (await conn.QueryAsync<Game>(query, new { GameId = id })).FirstOrDefault();
 
-                return await PopulateGameImages(game);
+                var gameWithImages = await PopulateGameImages(game);
+                return await PopulateGameFilters(gameWithImages);
             });
         }
 
@@ -430,6 +427,59 @@ namespace Gamestak.Repositories
             {
                 var images = await GetImagesByGameID(game.GameID);
                 game.ImageCollection = images;
+                return game;
+            });
+        }
+
+        private Task<List<Game>> PopulateGamesFilters(List<Game> games)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var gameIds = games.Select(g => g.GameID).ToList();
+
+                var caQuery = $@"
+                    SELECT ca.GameID, ca.CategoryID, c.CategoryName FROM {DbTables.CategoryAssignments} ca
+                    JOIN [{DbTables.Categories}] c ON ca.CategoryID = c.CategoryID
+                    WHERE ca.GameID IN @GameIds
+                ";
+
+                var faQuery = $@"
+                    SELECT fa.GameID, fa.FeatureID, f.FeatureName FROM {DbTables.FeatureAssignments} fa
+                    JOIN [{DbTables.Features}] f ON fa.FeatureID = f.FeatureID
+                    WHERE fa.GameID IN @GameIds
+                ";
+
+                var categoryAssignments = (await conn.QueryAsync<Category>(caQuery, new
+                {
+                    GameIds = gameIds,
+                })).ToList();
+
+                var featureAssignments = (await conn.QueryAsync<Feature>(faQuery, new
+                {
+                    GameIds = gameIds,
+                })).ToList();
+
+                return games.Select(game =>
+                {
+                    var filteredCategories = categoryAssignments.FindAll(c => c.GameID == game.GameID);
+                    game.Categories = filteredCategories;
+
+                    var filteredFeatures = featureAssignments.FindAll(f => f.GameID == game.GameID);
+                    game.Features = filteredFeatures;
+
+                    return game;
+                }).ToList();
+            });
+        }
+
+        private Task<Game> PopulateGameFilters(Game game)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var categories = await GetCategoriesByGameID(game.GameID);
+                var features = await GetFeaturesByGameID(game.GameID);
+                game.Categories = categories;
+                game.Features = features;
                 return game;
             });
         }
