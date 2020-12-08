@@ -35,13 +35,13 @@ export const GameCard = props => {
         </Card.Text>
         <div>
           {
-            isOnSale ?
+            isOnSale && price > 0 ?
             <>
               <Badge variant="primary" className="mr-2">{discountRate}</Badge>
               <span className="mr-2 text-muted"><s>{price}</s></span>
             </> : null
           }
-          <span>{isOnSale ? discountPrice : price}</span>
+          <span>{isOnSale ? discountPrice : (price > 0 ? price : 'Free To Play!')}</span>
         </div>
       </Card.Body>
     </Card>
