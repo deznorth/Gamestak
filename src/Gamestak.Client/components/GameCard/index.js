@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
@@ -11,6 +12,7 @@ export const GameCard = props => {
 
   const {
     className,
+    gameID,
     title,
     publisher,
     price,
@@ -26,25 +28,27 @@ export const GameCard = props => {
   );
 
   return (
-    <Card className={cn}>
-      <Card.Img variant="top" src={thumbnailUrl} />
-      <Card.Body>
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>
-          {publisher}
-        </Card.Text>
-        <div>
-          {
-            isOnSale && price > 0 ?
-            <>
-              <Badge variant="primary" className="mr-2">{discountRate}</Badge>
-              <span className="mr-2 text-muted"><s>{price}</s></span>
-            </> : null
-          }
-          <span>{isOnSale ? discountPrice : (price > 0 ? price : 'Free To Play!')}</span>
-        </div>
-      </Card.Body>
-    </Card>
+    <LinkContainer to={`/game/${gameID}`} exact style={{ cursor: 'pointer' }}>
+      <Card className={cn}>
+        <Card.Img variant="top" src={thumbnailUrl} />
+        <Card.Body>
+          <Card.Title>{title}</Card.Title>
+          <Card.Text>
+            {publisher}
+          </Card.Text>
+          <div>
+            {
+              isOnSale && price > 0 ?
+              <>
+                <Badge variant="primary" className="mr-2">{discountRate}</Badge>
+                <span className="mr-2 text-muted"><s>{price}</s></span>
+              </> : null
+            }
+            <span>{isOnSale ? discountPrice : (price > 0 ? price : 'Free To Play!')}</span>
+          </div>
+        </Card.Body>
+      </Card>
+    </LinkContainer>
   );
 };
 
@@ -58,6 +62,7 @@ GameCard.defaultProps = {
 
 GameCard.propTypes = {
   className: PropTypes.string,
+  gameID: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   publisher: PropTypes.string.isRequired,
   price: PropTypes.number,
