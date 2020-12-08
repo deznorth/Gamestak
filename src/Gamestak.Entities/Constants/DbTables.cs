@@ -15,6 +15,7 @@ namespace Gamestak.Entities.Constants
         public const string FeatureAssignments = "FeatureAssignments";
 
         public const string Games = "Games";
+        public const string FeaturedGames = "FeaturedGames";
         public const string GameImages = "GameImages";
         public const string GameKeys = "GameKeys";
 

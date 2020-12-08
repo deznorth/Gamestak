@@ -1,7 +1,7 @@
 USE gamestak
 GO
 
-DECLARE @GameId int = 1;
+DECLARE @GameId int = 14;
 DECLARE @Price float = 14.99;
 DECLARE @Title varchar(50) = 'Crash Bandicoot: Insane Trilogy';
 DECLARE @Description varchar(255) = 'This is the description for some game';
@@ -65,7 +65,24 @@ DECLARE @GameImageUrl varchar(128) = 'https://cdn.images.express.co.uk/img/dynam
 --SELECT * FROM Games WHERE GameID = @GameId
 
 -- READ get GameImages by GameID
-SELECT * FROM GameImages WHERE GameID = @GameId
+--SELECT * FROM GameImages WHERE GameID = @GameId
+
+-- CREATE Feature a game
+IF NOT EXISTS (SELECT GameID FROM FeaturedGames WHERE GameID = @GameId)
+BEGIN
+	INSERT INTO FeaturedGames (GameID)
+	VALUES (@GameId)
+END
+
+-- DELETE Unfeature a game
+IF EXISTS (SELECT GameID FROM FeaturedGames WHERE GameID = @GameId)
+BEGIN
+	DELETE FROM FeaturedGames
+	WHERE GameID = @GameId
+END
+
+-- READ get all featured games
+SELECT * FROM Games g JOIN FeaturedGames fg ON g.GameID = fg.GameID 
 
 -- READ get all games
 SELECT * FROM Games

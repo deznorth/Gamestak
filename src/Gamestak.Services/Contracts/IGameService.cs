@@ -9,10 +9,12 @@ namespace Gamestak.Services.Contracts
         #region CREATE
         public Task<Game> SaveGame(GameCreationRequest game);
         public Task<IEnumerable<Game>> BulkSaveGames(List<GameCreationRequest> games);
+        public Task<int> FeatureGame(int gameId);
         #endregion
 
         #region READ
         public Task<IEnumerable<Game>> GetGames();
+        public Task<IEnumerable<Game>> GetFeaturedGames();
         public Task<Game> GetGameByID(int id);
         public Task<IEnumerable<Game>> GetGamesByID(IEnumerable<int> ids);
         public Task<IEnumerable<GameImage>> GetImagesByGameID(int id);
@@ -25,6 +27,7 @@ namespace Gamestak.Services.Contracts
         #endregion
 
         #region DELETE
+        public Task<int> UnfeatureGame(int gameId);
         #endregion
     }
 }

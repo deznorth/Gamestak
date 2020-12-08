@@ -74,6 +74,18 @@ namespace Gamestak.Services
                 throw e;
             }
         }
+
+        public async Task<int> FeatureGame(int gameId)
+        {
+            try
+            {
+                return await gameRepository.FeatureGame(gameId);
+            } catch (Exception e)
+            {
+                logger.LogError(e, "Error adding game to featured games");
+                throw e;
+            }
+        }
         #endregion
 
         #region READ
@@ -86,6 +98,19 @@ namespace Gamestak.Services
             catch (Exception e)
             {
                 logger.LogError(e, "Error retrieving all games");
+                throw e;
+            }
+        }
+
+        public async Task<IEnumerable<Game>> GetFeaturedGames()
+        {
+            try
+            {
+                return await gameRepository.GetFeaturedGames();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error retrieving featured games");
                 throw e;
             }
         }
@@ -170,6 +195,18 @@ namespace Gamestak.Services
         #endregion
 
         #region DELETE
+        public async Task<int> UnfeatureGame(int gameId)
+        {
+            try
+            {
+                return await gameRepository.UnfeatureGame(gameId);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error unfeaturing game");
+                throw e;
+            }
+        }
         #endregion
     }
 }

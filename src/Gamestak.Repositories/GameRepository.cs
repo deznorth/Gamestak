@@ -82,6 +82,29 @@ namespace Gamestak.Repositories
             });
         }
 
+        public Task<int> FeatureGame(int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF NOT EXISTS (SELECT GameID FROM {DbTables.FeaturedGames} WHERE GameID = @GameId)
+                    BEGIN
+	                    INSERT INTO {DbTables.FeaturedGames} (GameID)
+	                    VALUES (@GameId)
+                    END
+                ";
+
+                var rowsAffected = await conn.ExecuteAsync(query, new { GameId = gameId });
+
+                if (rowsAffected < 0)
+                {
+                    throw new ArgumentException("Game object already featured or is invalid");
+                }
+
+                return rowsAffected;
+            });
+        }
+
         public Task<List<Category>> AssignGameCategories(int gameId, List<int> categoryIds)
         {
             return gamestakDb.Use(async conn =>
@@ -143,6 +166,22 @@ namespace Gamestak.Repositories
             {
                 var query = @$"
                     SELECT * FROM {DbTables.Games}
+                ";
+
+                var games = (await conn.QueryAsync<Game>(query)).ToList();
+
+                return await PopulateGamesImages(games);
+            });
+        }
+
+        public Task<List<Game>> GetFeaturedGames()
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT * FROM {DbTables.Games} g
+                    JOIN {DbTables.FeaturedGames} fg
+                    ON g.GameID = fg.GameID 
                 ";
 
                 var games = (await conn.QueryAsync<Game>(query)).ToList();
@@ -276,6 +315,28 @@ namespace Gamestak.Repositories
         #endregion
 
         #region DELETE
+        public Task<int> UnfeatureGame(int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF EXISTS (SELECT GameID FROM {DbTables.FeaturedGames} WHERE GameID = @GameId)
+                    BEGIN
+	                    DELETE FROM {DbTables.FeaturedGames}
+	                    WHERE GameID = @GameId
+                    END
+                ";
+
+                var rowsAffected = await conn.ExecuteAsync(query, new { GameId = gameId });
+
+                if (rowsAffected < 0)
+                {
+                    throw new Exception("Game object does not exist");
+                }
+
+                return rowsAffected;
+            });
+        }
         #endregion
 
         #region UTILITY

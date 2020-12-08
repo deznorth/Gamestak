@@ -60,6 +60,24 @@ namespace Gamestak.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+        [HttpPost("featured/{gameId}")]
+        public async Task<IActionResult> FeatureGame(int gameId)
+        {
+            try
+            {
+                var result = await gameService.FeatureGame(gameId);
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return new BadRequestResult();
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
         #endregion
 
         #region READ
@@ -69,6 +87,20 @@ namespace Gamestak.Controllers
             try
             {
                 var result = await gameService.GetGames();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("featured")]
+        public async Task<IActionResult> GetFeaturedGames()
+        {
+            try
+            {
+                var result = await gameService.GetFeaturedGames();
                 return Ok(result);
             }
             catch (Exception e)
@@ -166,6 +198,19 @@ namespace Gamestak.Controllers
         #endregion
 
         #region DELETE
+        [HttpDelete("featured/{gameId}")]
+        public async Task<IActionResult> UnfeatureGame(int gameId)
+        {
+            try
+            {
+                var result = await gameService.UnfeatureGame(gameId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
         #endregion
     }
 }
