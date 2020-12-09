@@ -145,9 +145,12 @@ GameDetail.propTypes = {
 
 export default connect(state => {
   const pageState = selectors.selectPageState(state, 'detail');
+  const isAuthenticated = selectors.selectIsAuthenticated(state);
+  const owned = isAuthenticated && selectors.selectIsOwnedGame(state, pageState.gameID);
   const isOnCart = pageState.gameID ? selectors.selectIsOnCart(state, pageState.gameID) : false;
   return {
     ...pageState,
+    owned,
     isOnCart,
   };
 }, {

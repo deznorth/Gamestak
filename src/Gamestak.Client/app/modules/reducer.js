@@ -17,6 +17,15 @@ const INITIAL_STATE = {
 };
 
 export default handleActions({
+  [actions.updateOwnedGames]: (state, { payload }) => {
+    const currentUser = state.currentUser;
+    currentUser.ownedGames = payload;
+    localStorage.setItem('user', JSON.stringify(currentUser));
+    return {
+      ...state,
+      currentUser,
+    };
+  },
   [actions.addToCart]: (state, { payload }) => {
     const currentUser = state.currentUser;
     const shoppingCart = state.shoppingCart;

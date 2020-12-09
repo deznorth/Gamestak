@@ -36,10 +36,11 @@ function* attemptCheckout({ payload }) {
   try {
     yield call(Proxies.checkoutGames, payload);
     log(`Checkedout cart!`);
-    yield all([
-      put(actions.clearCart()),
-      put(actions.checkoutSuccess()),
-    ]);
+    const ownedGames = yield call(Proxies.getOwnedGames, payload.userID);
+    yield put(actions.updateOwnedGames(ownedGames.data));
+    yield put(actions.clearCart());
+    yield put(actions.checkoutSuccess());
+    yield put(actions.hideModal());
   } catch (err) {
     yield put(actions.checkoutFailure());
     log('Error checking out cart', err);

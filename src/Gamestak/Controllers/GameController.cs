@@ -165,6 +165,20 @@ namespace Gamestak.Controllers
             }
         }
 
+        [HttpGet("owned")]
+        public async Task<IActionResult> GetOwnedGames([FromQuery] int userId)
+        {
+            try
+            {
+                var result = await gameService.GetOwnedGames(userId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
         [HttpGet("key")]
         public async Task<IActionResult> GetGameKey([FromQuery] int userId, [FromQuery] int gameId)
         {

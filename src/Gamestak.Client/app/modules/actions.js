@@ -28,5 +28,7 @@ export const checkoutAttempt = makeAction('CHECKOUT_ATTEMPT');
 export const checkoutSuccess = makeAction('CHECKOUT_SUCCESS');
 export const checkoutFailure = makeAction('CHECKOUT_FAILURE');
 
+export const updateOwnedGames = makeAction('UPDATE_OWNED');
+
 // Saga-only actions
 export const initialize = makeAction('INITIALIZE');
