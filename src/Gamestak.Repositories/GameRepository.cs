@@ -76,12 +76,6 @@ namespace Gamestak.Repositories
                     END
                 ";
 
-                //var parameters = images.Select(i => new
-                //{
-                //    GameId = gameId,
-                //    GameImageUrl = i
-                //}).ToArray();
-
                 var parameters = new
                 {
                     GameId = gameId,
@@ -170,6 +164,35 @@ namespace Gamestak.Repositories
                 return result;
             });
         }
+
+        public Task<int> SaveGameKeys(int userId, List<int> gameIds)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF NOT EXISTS (SELECT GameID FROM {DbTables.GameKeys} WHERE UserID = @UserId and GameID = @GameId)
+                    BEGIN
+	                    INSERT INTO {DbTables.GameKeys} (GameID, UserID)
+	                    VALUES (@GameId, @UserId)
+                    END
+                ";
+
+                var parameters = gameIds.Select(gameId => new
+                {
+                    GameId = gameId,
+                    UserId = userId,
+                }).ToArray();
+
+                var rowsAffected = await conn.ExecuteAsync(query, parameters);
+
+                if (rowsAffected < 0)
+                {
+                    throw new ArgumentException("GameKey already exists or ids are invalid");
+                }
+
+                return rowsAffected;
+            });
+        }
         #endregion
 
         #region READ
@@ -181,11 +204,12 @@ namespace Gamestak.Repositories
                 var searchTermPresent = searchParams.SearchTerm != "";
                 var categoriesPresent = searchParams.Categories != null && searchParams.Categories.Count > 0;
                 var featuresPresent = searchParams.Features != null && searchParams.Features.Count > 0;
+                var ownerPresent = searchParams.OwnerID != null;
 
                 var whereClause = "";
                 var orderbyClause = "ORDER BY ";
 
-                if (searchTermPresent || categoriesPresent || featuresPresent)
+                if (searchTermPresent || categoriesPresent || featuresPresent || ownerPresent)
                 {
                     whereClause = "WHERE";
                 }
@@ -200,6 +224,10 @@ namespace Gamestak.Repositories
                 if (featuresPresent)
                 {
                     whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.FeatureAssignments} fa WHERE fa.GameID = g.GameID and FeatureID IN @FeatureIds)";
+                }
+                if (ownerPresent)
+                {
+                    whereClause += $@" GameID IN (SELECT GameID FROM {DbTables.GameKeys} gk WHERE gk.GameID = g.GameID and UserID = @OwnerId)";
                 }
 
                 switch (searchParams.SortBy)
@@ -231,11 +259,14 @@ namespace Gamestak.Repositories
                 ";
 
                 var games = (await conn.QueryAsync<Game>(query, new {
+                    OwnerId = searchParams.OwnerID,
                     CategoryIds = searchParams.Categories,
                     FeatureIds = searchParams.Features,
                 })).ToList();
 
-                return await PopulateGamesImages(games);
+                var gamesWithImages = await PopulateGamesImages(games);
+                
+                return await PopulateGamesFilters(gamesWithImages);
             });
         }
 
@@ -265,7 +296,8 @@ namespace Gamestak.Repositories
 
                 var game = (await conn.QueryAsync<Game>(query, new { GameId = id })).FirstOrDefault();
 
-                return await PopulateGameImages(game);
+                var gameWithImages = await PopulateGameImages(game);
+                return await PopulateGameFilters(gameWithImages);
             });
         }
 
@@ -374,6 +406,45 @@ namespace Gamestak.Repositories
                 return result;
             });
         }
+
+        public Task<bool> GetIsOwner(int userId, int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var Query = @$"
+                    SELECT g.GameID FROM {DbTables.Games} g
+                    JOIN {DbTables.GameKeys} gk ON g.GameID = gk.GameID
+                    WHERE g.GameID = @GameId and gk.UserID = @UserId
+                ";
+
+                var games = (await conn.QueryAsync<Game>(Query, new
+                {
+                    GameId = gameId,
+                    UserId = userId,
+                })).ToList();
+
+                return games.Count > 0;
+            });
+        }
+
+        public Task<GameKey> GetGameKey(int userId, int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var Query = @$"
+                    SELECT * FROM {DbTables.GameKeys}
+                    WHERE GameID = @GameId and UserID = @UserId
+                ";
+
+                var gameKey = (await conn.QueryAsync<GameKey>(Query, new
+                {
+                    GameId = gameId,
+                    UserId = userId,
+                })).FirstOrDefault();
+
+                return gameKey;
+            });
+        }
         #endregion
 
         #region UPDATE
@@ -430,6 +501,59 @@ namespace Gamestak.Repositories
             {
                 var images = await GetImagesByGameID(game.GameID);
                 game.ImageCollection = images;
+                return game;
+            });
+        }
+
+        private Task<List<Game>> PopulateGamesFilters(List<Game> games)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var gameIds = games.Select(g => g.GameID).ToList();
+
+                var caQuery = $@"
+                    SELECT ca.GameID, ca.CategoryID, c.CategoryName FROM {DbTables.CategoryAssignments} ca
+                    JOIN [{DbTables.Categories}] c ON ca.CategoryID = c.CategoryID
+                    WHERE ca.GameID IN @GameIds
+                ";
+
+                var faQuery = $@"
+                    SELECT fa.GameID, fa.FeatureID, f.FeatureName FROM {DbTables.FeatureAssignments} fa
+                    JOIN [{DbTables.Features}] f ON fa.FeatureID = f.FeatureID
+                    WHERE fa.GameID IN @GameIds
+                ";
+
+                var categoryAssignments = (await conn.QueryAsync<Category>(caQuery, new
+                {
+                    GameIds = gameIds,
+                })).ToList();
+
+                var featureAssignments = (await conn.QueryAsync<Feature>(faQuery, new
+                {
+                    GameIds = gameIds,
+                })).ToList();
+
+                return games.Select(game =>
+                {
+                    var filteredCategories = categoryAssignments.FindAll(c => c.GameID == game.GameID);
+                    game.Categories = filteredCategories;
+
+                    var filteredFeatures = featureAssignments.FindAll(f => f.GameID == game.GameID);
+                    game.Features = filteredFeatures;
+
+                    return game;
+                }).ToList();
+            });
+        }
+
+        private Task<Game> PopulateGameFilters(Game game)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var categories = await GetCategoriesByGameID(game.GameID);
+                var features = await GetFeaturesByGameID(game.GameID);
+                game.Categories = categories;
+                game.Features = features;
                 return game;
             });
         }

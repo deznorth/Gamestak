@@ -13,6 +13,7 @@ namespace Gamestak.Repositories.Contracts
         public Task<int> FeatureGame(int gameId);
         public Task<List<Category>> AssignGameCategories(int gameId, List<int> categoryIds);
         public Task<List<Feature>> AssignGameFeatures(int gameId, List<int> featureIds);
+        public Task<int> SaveGameKeys(int userId, List<int> gameIds);
         #endregion
 
         #region READ
@@ -26,6 +27,8 @@ namespace Gamestak.Repositories.Contracts
         public Task<List<Category>> GetCategoriesByGameID(int gameId);
         public Task<List<Feature>> GetFeatures();
         public Task<List<Feature>> GetFeaturesByGameID(int gameId);
+        public Task<bool> GetIsOwner(int userId, int gameId);
+        public Task<GameKey> GetGameKey(int userId, int gameId);
         #endregion
 
         #region UPDATE

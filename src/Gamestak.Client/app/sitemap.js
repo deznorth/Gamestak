@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // Gamestak Pages
 const ThemePage = lazy(() => import(/* webpackChunkName: "gs-theme" */ 'pages/Theme'));
 const StorePage = lazy(() => import(/* webpackChunkName: "gs-store" */ 'pages/Store'));
+const GameDetailPage = lazy(() => import(/* webpackChunkName: "gs-detail" */ 'pages/GameDetail'));
 const AboutPage = lazy(() => import(/* webpackChunkName: "gs-about" */ 'pages/About'));
 
 // Admin Pages
@@ -34,6 +35,12 @@ export const SITEMAP = {
     path: '/theme',
     exact: true,
     component: ThemePage,
+  },
+  GameDetail: {
+    name: 'gamedetail',
+    path: '/game/:id',
+    exact: true,
+    component: GameDetailPage,
   },
 };
 

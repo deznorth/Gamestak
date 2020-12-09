@@ -87,7 +87,6 @@ export default connect(state => {
   };
 }, {
   init: actions.initialize,
-  fetchGames: actions.fetchingGames,
   searchGames: actions.searchingGames,
   updateSearchParams: actions.updateSearchParams,
 })(Store);

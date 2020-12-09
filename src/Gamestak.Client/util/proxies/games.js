@@ -1,11 +1,13 @@
 import axios from 'axios';
 
-// GET
+// READ
 export const getGames = async filters => await axios.post('/api/game/search', filters);
+
+export const getGameByID = async id => await axios.get(`/api/game/${id}`);
 
 export const getFeaturedGames = async () => await axios.get('/api/game/featured');
 
-// POST
+// CREATE
 export const featureGame = async (id) => await axios.post(`/api/game/featured/${id}`);
 
 // DELETE

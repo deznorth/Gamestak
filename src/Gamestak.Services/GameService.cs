@@ -86,6 +86,19 @@ namespace Gamestak.Services
                 throw e;
             }
         }
+
+        public async Task<int> SaveGameKeys(int userId, List<int> gameIds)
+        {
+            try
+            {
+                return await gameRepository.SaveGameKeys(userId, gameIds);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error saving game keys");
+                throw e;
+            }
+        }
         #endregion
 
         #region READ
@@ -189,6 +202,31 @@ namespace Gamestak.Services
             catch (Exception e)
             {
                 logger.LogError(e, "Error retrieving features list");
+                throw e;
+            }
+        }
+
+        public async Task<bool> GetIsOwner(int userId, int gameId)
+        {
+            try
+            {
+                return await gameRepository.GetIsOwner(userId, gameId);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error getting isOwner");
+                throw e;
+            }
+        }
+        public async Task<GameKey> GetGameKey(int userId, int gameId)
+        {
+            try
+            {
+                return await gameRepository.GetGameKey(userId, gameId);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error getting game key");
                 throw e;
             }
         }

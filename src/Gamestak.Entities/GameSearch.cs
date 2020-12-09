@@ -4,6 +4,7 @@ namespace Gamestak.Entities
 {
     public class GameSearch
     {
+        public int? OwnerID { get; set; }
         public string SearchTerm { get; set; }
         public SortType SortBy { get; set; }
         public List<int> Categories { get; set; }

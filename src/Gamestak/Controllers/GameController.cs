@@ -78,6 +78,20 @@ namespace Gamestak.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+        [HttpPost("key")]
+        public async Task<IActionResult> GetGameKey([FromBody] PurchaseRequest order)
+        {
+            try
+            {
+                var result = await gameService.SaveGameKeys(order.UserID, order.GameIDs);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
         #endregion
 
         #region READ
@@ -129,6 +143,34 @@ namespace Gamestak.Controllers
             try
             {
                 var result = await gameService.GetGamesByID(ids);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("owner")]
+        public async Task<IActionResult> GetIsOwner([FromQuery] int userId, [FromQuery] int gameId)
+        {
+            try
+            {
+                var result = await gameService.GetIsOwner(userId, gameId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("key")]
+        public async Task<IActionResult> GetGameKey([FromQuery] int userId, [FromQuery] int gameId)
+        {
+            try
+            {
+                var result = await gameService.GetGameKey(userId, gameId);
                 return Ok(result);
             }
             catch (Exception e)
