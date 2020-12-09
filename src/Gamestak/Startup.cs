@@ -13,6 +13,9 @@ using Gamestak.Repositories;
 using Gamestak.Services;
 using Gamestak.DataAccess.Databases;
 using Gamestak.DataAccess;
+using Gamestak.Entities;
+using Dapper;
+using System.Linq;
 
 namespace Gamestak
 {
@@ -66,9 +69,11 @@ namespace Gamestak
 
             // Repositories
             builder.RegisterType<UserRepository>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<GameRepository>().AsImplementedInterfaces().SingleInstance();
 
             // Services
             builder.RegisterType<UserService>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<GameService>().AsImplementedInterfaces().SingleInstance();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,8 +113,10 @@ namespace Gamestak
             {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "management",
+                    pattern: "manage/{*url}",
+                    defaults: new { controller = "Home", action = "Management" });
+                endpoints.MapFallbackToController("Index", "Home");
             });
 
             app.UseCors(policy =>

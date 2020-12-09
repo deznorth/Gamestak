@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Gamestak.Entities
 {
@@ -11,6 +12,8 @@ namespace Gamestak.Entities
         public string Username { get; set; }
         public string Password { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<int> OwnedGames { get; set; }
+        public UserRole Role { get; set; }
     }
 
     public static class UserExtensions
@@ -21,7 +24,9 @@ namespace Gamestak.Entities
             {
                 UserId = user.UserId,
                 Username = user.Username,
-                CreatedAt = user.CreatedAt
+                CreatedAt = user.CreatedAt,
+                OwnedGames = user.OwnedGames,
+                Role = user.Role
             };
         }
     }

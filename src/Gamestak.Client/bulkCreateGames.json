@@ -1,0 +1,146 @@
+[
+  {
+      "Title": "Assassin's Creed: Valhalla",
+      "Publisher": "Ubisoft",
+      "Description": "In Assassin's Creed Valhalla, become Eivor, a legendary Viking raider on a quest for glory. Explore a dynamic and beautiful open world set against the brutal backdrop of England’s Dark Ages. Raid your enemies, grow your settlement, and build your political power in the quest to earn a place among the gods in Valhalla.",
+      "Price": 59.99,
+      "DiscountRate": 0.2,
+      "ThumbnailUrl": "https://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-masterCatalog/en_US/dw1ffc694a/images/large/5e849c6c5cdf9a21c0b4e731.jpg?sw=341&sh=450&sm=fit",
+      "ImageCollection": [
+          "https://www.nme.com/wp-content/uploads/2020/07/071720-Assassins-Creed-Valhalla-Ubisoft.jpg",
+          "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/assassins-creed-valhalla-director-original-1604922354.jpg",
+          "https://cdn.mos.cms.futurecdn.net/ehcsu2GsHTanW6jxoJ43rH.jpg"
+      ],
+      "ReleaseDate": "2020-11-10",
+      "Categories": [1,4],
+      "Features": [1]
+  },
+  {
+      "Title": "Tom Clancy's The Division 2",
+      "Publisher": "Ubisoft",
+      "Description": "Tom Clancy's The Division 2 is a shooter RPG with campaign, co-op, and PvP modes that offers more variety in missions and challenges, new progression systems with unique twists and surprises, and fresh innovations that offer new ways to play",
+      "Price": 19.99,
+      "DiscountRate": 0.4,
+      "ThumbnailUrl": "https://upload.wikimedia.org/wikipedia/en/a/af/The_Division_2_art.jpg",
+      "ImageCollection": [
+          "https://cdn.mos.cms.futurecdn.net/Mbk7Lv34i4r42qYYbmRa53.jpg",
+          "https://www.pcgamesn.com/wp-content/uploads/2020/03/division-2-warlords-of-new-york-boss-fight.jpg",
+          "https://gamingbolt.com/wp-content/uploads/2018/06/The-Division-2-image-10.jpg"
+      ],
+      "ReleaseDate": "2019-02-07",
+      "Categories": [1,2,4],
+      "Features": [1]
+  },
+  {
+      "Title": "Immortals Fenyx Rising",
+      "Publisher": "Ubisoft",
+      "Description": "Play as Fenyx, a new winged demigod, on a quest to save the Greek gods and their home from a dark curse. Take on mythological beasts, master the legendary powers of the gods, and defeat Typhon, the deadliest Titan in Greek mythology, in an epic fight for the ages.",
+      "Price": 59.99,
+      "DiscountRate": 0.3,
+      "ThumbnailUrl": "https://ubistatic19-a.akamaihd.net/ubicomstatic/en-gb/global/game-info/ifr-boxart-keyart-01-560x698-v2-logo_350472.jpg",
+      "ImageCollection": [
+          "https://i.pcmag.com/imagery/reviews/04Fcj3bTbVZhsbNAtZsHYvD-1.1606851928.fit_scale.size_1182x667.jpg",
+          "https://www.pockettactics.com/wp-content/uploads/2020/12/Immortals-fenyx-rising-cyclops.jpg",
+          "https://cdn.onebauer.media/one/media/5fca/60b3/59a2/8708/e2aa/bda5/immortals-fenyx-rising-1.jpg?quality=50&width=1800&ratio=16-9&resizeStyle=aspectfill&format=jpg"
+      ],
+      "ReleaseDate": "2020-12-03",
+      "Categories": [1,2],
+      "Features": [1]
+  },
+  {
+      "Title": "DOOM Eternal",
+      "Publisher": "Bethesda Softworks",
+      "Description": "Hell’s armies have invaded Earth. Become the Slayer in an epic single-player campaign to conquer demons across dimensions and stop the final destruction of humanity.",
+      "Price": 59.99,
+      "DiscountRate": 0.25,
+      "ThumbnailUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/9/9d/Cover_Art_of_Doom_Eternal.png/220px-Cover_Art_of_Doom_Eternal.png",
+      "ImageCollection": [
+          "https://cdn.mos.cms.futurecdn.net/BZpwzJBzCrmHx6HRRxQAdn.jpg",
+          "https://www.windowscentral.com/sites/wpcentral.com/files/styles/xlarge/public/field/image/2020/03/doom-eternal-doomguy.jpg?itok=cWcVGDGW",
+          "https://fastly.syfy.com/sites/syfy/files/styles/1200x680/public/2020/03/doom-eternal.jpg?offset-x=100&offset-y=0"
+      ],
+      "ReleaseDate": "2020-03-20",
+      "Categories": [1,5],
+      "Features": [1,2]
+  },
+  {
+      "Title": "Final Fantasy XV",
+      "Publisher": "Square Enix",
+      "Description": "Take the journey, now in ultimate quality. Boasting a wealth of bonus content and supporting ultra high-resolution graphical options and HDR 10, you can now enjoy the beautiful and carefully-crafted experience of FINAL FANTASY XV like never before.",
+      "Price": 34.99,
+      "DiscountRate": 0.50,
+      "ThumbnailUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/FF_XV_cover_art.jpg/220px-FF_XV_cover_art.jpg",
+      "ImageCollection": [
+          "https://static.techspot.com/images/products/2018/pc-games/org/2018-03-23-product-14.jpg",
+          "https://www.g4less.com/images/product/10671_03.jpg",
+          "https://www.justpushstart.com/wp-content/uploads/2017/02/Final-Fantasy-XV-22-1920x1080.jpg"
+      ],
+      "ReleaseDate": "2018-03-06",
+      "Categories": [4],
+      "Features": [1,2,3]
+  },
+  {
+      "Title": "Until You Fall",
+      "Publisher": "Schell Games",
+      "Description": "Fight. Fall. Rise Again. Grow stronger as you battle through an awesome neon environment and strike down magic-infused monstrosities. Fantasy and synthwave collide in this physically active VR hack-and-slash roguelite.",
+      "Price": 24.99,
+      "DiscountRate": 0.30,
+      "ThumbnailUrl": "https://i.imgur.com/VD8PZMl.jpg",
+      "ImageCollection": [
+          "https://s3.amazonaws.com/prod-media.gameinformer.com/styles/thumbnail/s3/2019/05/12/4b3fe9b2/untilyoufall.jpg",
+          "https://schellgames.nyc3.digitaloceanspaces.com/transforms/spacescdn/Games/until-you-fall/41353/screenshot16_09bc54fdf84a484f7959a770404139b4.png",
+          "https://schellgames.nyc3.digitaloceanspaces.com/transforms/spacescdn/Blog/50873/UYF-Thumbnail-0.5_c810b0803c915e470b8c13a9c7b1435b.png"
+      ],
+      "ReleaseDate": "2020-10-27",
+      "Categories": [1,2],
+      "Features": [1,4]
+  },
+  {
+      "Title": "Tom Clancy's Rainbow Six Siege",
+      "Publisher": "Ubisoft",
+      "Description": "Tom Clancy's Rainbow Six Siege is the latest installment of the acclaimed first-person shooter franchise developed by the renowned Ubisoft Montreal studio.",
+      "Price": 29.99,
+      "DiscountRate": 0.67,
+      "ThumbnailUrl": "https://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-masterCatalog/en_US/dw64173a87/images/large/56c494ad88a7e300458b4d5a.jpg?sw=341&sh=450&sm=fit",
+      "ImageCollection": [
+          "https://resim.oyunkayit.net/2018/07/tom-clancys-rainbow-six-siege-ss1.jpg",
+          "https://www.desicomments.com/wallpapers/wp-content/uploads/2015/07/Tom-Clancys-Rainbow-Six-Siege-Game-Screenshot1.jpg",
+          "https://assets.gamepur.com/images/feature/rainbow-six-siege-screenshot-1.jpg"
+      ],
+      "ReleaseDate": "2015-12-01",
+      "Categories": [1,5],
+      "Features": [1,2,3]
+  },
+  {
+      "Title": "Dragon Quest XI S: Echoes of an Elusive Age",
+      "Publisher": "Square Enix",
+      "Description": "The Definitive Edition includes the critically acclaimed DRAGON QUEST XI, plus additional scenarios, orchestral soundtrack, 2D mode and more! Whether you are a longtime fan or a new adventurer, this is the ultimate DQXI experience.",
+      "Price": 39.99,
+      "DiscountRate": 0.20,
+      "ThumbnailUrl": "https://keyofgames.com/wp-content/uploads/2019/09/51ficQLNdDL._SX260_.jpg",
+      "ImageCollection": [
+          "https://media.gamestop.com/i/gamestop/10160984_10167492_SCR20/Dragon-Quest-XI-Echoes-of-an-Elusive-Age?$screen$&bg=rgb(0,0,0)",
+          "https://www.nme.com/wp-content/uploads/2020/07/Dragon-Quest.jpg",
+          "https://static2.gamerantimages.com/wordpress/wp-content/uploads/square-enix-confirms-dragon-quest-12-1.jpg"
+      ],
+      "ReleaseDate": "2020-12-04",
+      "Categories": [4],
+      "Features": [1]
+  },
+  {
+      "Title": "Beat Saber",
+      "Publisher": "Beat Games",
+      "Description": "Beat Saber is a VR rhythm game where you slash the beats of adrenaline-pumping music as they fly towards you, surrounded by a futuristic world.",
+      "Price": 29.99,
+      "DiscountRate": 0.40,
+      "ThumbnailUrl": "https://cdn.game.tv/game-tv-content/images_3/e6fd1a929e6339b6de07e52b746a75f0/GameTile.jpg",
+      "ImageCollection": [
+          "https://www.roadtovr.com/wp-content/uploads/2018/01/beat-saber.jpg",
+          "https://www.playstationlifestyle.net/assets/uploads/2020/01/Beat-Saber.jpg",
+          "https://i.ytimg.com/vi/vL39Sg2AqWg/maxresdefault.jpg"
+      ],
+      "ReleaseDate": "2019-05-21",
+      "Categories": [2],
+      "Features": [1,2,4]
+  }
+]

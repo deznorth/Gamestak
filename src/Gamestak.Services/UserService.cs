@@ -5,15 +5,21 @@ using System.Threading.Tasks;
 using Gamestak.Services.Contracts;
 using Gamestak.Repositories.Contracts;
 using Gamestak.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace Gamestak.Services
 {
     public class UserService : IUserService
     {
+        private readonly ILogger<UserService> logger;
         private readonly IUserRepository userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(
+            ILogger<UserService> logger,
+            IUserRepository userRepository
+        )
         {
+            this.logger = logger;
             this.userRepository = userRepository;
         }
 
@@ -26,6 +32,26 @@ namespace Gamestak.Services
         #endregion
 
         #region READ
+
+        public async Task<UserResponse> Login(User user)
+        {
+            try
+            {
+                var loggedInUser = await userRepository.Login(user);
+
+                if (loggedInUser == null)
+                {
+                    throw new ArgumentException("Wrong password or missing user");
+                }
+
+                return loggedInUser.ToResponse();
+            }   catch(ArgumentException e)
+            {
+                logger.LogError(e, "Error loging in");
+                throw e;
+            }
+        }
+
         public async Task<List<UserResponse>> GetAllUsers()
         {
             var result = await userRepository.GetAllUsers();

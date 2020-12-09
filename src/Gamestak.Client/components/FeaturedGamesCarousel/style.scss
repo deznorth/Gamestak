@@ -1,0 +1,68 @@
+@import 'util/styles/gamestak-vars';
+
+.gs-featured-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 6rem;
+
+  &__container {
+    width: 61vw;
+    background-color: $gray-900;
+    box-shadow: 3px 3px 6px rgba($black, 0.1);
+
+    .carousel-indicators {
+      bottom: -5rem;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 10rem;
+    }
+    .carousel-control-prev {
+      left: -10rem;
+    }
+    .carousel-control-next {
+      right: -10rem;
+    }
+  }
+
+  &__game {
+    display: flex;
+
+    .carousel-indicators {
+      bottom: 0;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 15rem;
+    }
+    .carousel-control-prev {
+      left: 0;
+    }
+    .carousel-control-next {
+      right: 0;
+    }
+
+    &__carousel {
+      flex: 1;
+      img {
+        height: 45rem;
+        background-size: cover;
+      }
+    }
+
+    &__info {
+      padding: 2rem;
+      flex: 0.5;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      &__cta {
+        align-self: flex-end;
+      }
+    }
+  }
+}

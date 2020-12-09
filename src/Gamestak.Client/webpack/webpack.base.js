@@ -5,19 +5,26 @@ module.exports = {
   devtool: false,
 
   entry: {
-    'gamestak': [ 'core-js/stable', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'src', 'index.js')],
+    'gamestak': [ 'core-js/stable', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'app', 'index.js')],
+    'admin': [ 'core-js/stable', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'admin', 'index.js')],
   },
 
   output: {
     path: path.join(__dirname, '..', 'dist'),
     filename: '[name].module.js',
-    publicPath: 'dist/',
+    publicPath: '/dist/',
     chunkFilename: '[name]_[chunkhash].module.js'
   },
 
   resolve: {
     alias: {
-      root: path.join(__dirname, '..', 'src'),
+      root: path.join(__dirname, '..'),
+      assets: path.join(__dirname, '..', 'assets'),
+      app: path.join(__dirname, '..', 'app'),
+      admin: path.join(__dirname, '..', 'admin'),
+      pages: path.join(__dirname, '..', 'pages'),
+      components: path.join(__dirname, '..', 'components'),
+      util: path.join(__dirname, '..', 'util'),
     },
   },
 
@@ -34,6 +41,14 @@ module.exports = {
           { loader: 'style-loader' },
           { loader: 'css-loader' }
         ]
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       }
     ]
   },
