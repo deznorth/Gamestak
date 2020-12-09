@@ -7,6 +7,7 @@ namespace Gamestak.Entities.Constants
     public class DbTables
     {
         public const string Users = "Users";
+        public const string UserRoles = "UserRoles";
 
         public const string Categories = "Categories";
         public const string CategoryAssignments = "CategoryAssignments";

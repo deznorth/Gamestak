@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Gamestak.Repositories
 {
@@ -50,6 +51,25 @@ namespace Gamestak.Repositories
         #endregion
 
         #region READ
+        public Task<User> Login(User user)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    select *
+                    from {DbTables.Users}
+                    where Username = @User and Password = @Pass
+                ";
+
+                var response = await conn.QueryAsync<User>(query, new
+                {
+                    User = user.Username,
+                    Pass = user.Password,
+                });
+
+                return await PopulateUserFields(response.FirstOrDefault());
+            });
+        }
         public Task<List<User>> GetAllUsers()
         {
             return gamestakDb.Use(async conn =>
@@ -86,6 +106,34 @@ namespace Gamestak.Repositories
             });
         }
 
+        public Task<List<int>> GetGamesOwned(int userId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = $"SELECT GameID FROM {DbTables.GameKeys} WHERE UserID = @UserId";
+
+                var response = await conn.QueryAsync<int>(query, new { UserId = userId });
+
+                return response.ToList();
+            });
+        }
+
+        public Task<UserRole> GetUserRole(int userId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    SELECT ur.RoleID, ur.Title, ur.ManagementAccess
+                    FROM {DbTables.UserRoles} ur
+                    JOIN {DbTables.Users} u ON u.RoleID = ur.RoleID
+                    WHERE u.UserID = @UserId
+                ";
+
+                var response = await conn.QueryAsync<UserRole>(query, new { UserId = userId });
+
+                return response.FirstOrDefault();
+            });
+        }
         #endregion
 
         #region DELETE
@@ -110,6 +158,23 @@ namespace Gamestak.Repositories
             });
         }
 
+        #endregion
+
+        #region UTILITY
+        private Task<User> PopulateUserFields(User user)
+        {
+            if (user == null) throw new ArgumentException();
+            return gamestakDb.Use(async conn =>
+            {
+                var role = await GetUserRole(user.UserId);
+                var games = await GetGamesOwned(user.UserId);
+
+                user.Role = role;
+                user.OwnedGames = games;
+
+                return user;
+            });
+        }
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Gamestak.Entities
 {
@@ -10,5 +11,7 @@ namespace Gamestak.Entities
         public int UserId { get; set; }
         public string Username { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<int> OwnedGames { get; set; }
+        public UserRole Role { get; set; }
     }
 }

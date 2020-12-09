@@ -13,6 +13,9 @@ using Gamestak.Repositories;
 using Gamestak.Services;
 using Gamestak.DataAccess.Databases;
 using Gamestak.DataAccess;
+using Gamestak.Entities;
+using Dapper;
+using System.Linq;
 
 namespace Gamestak
 {

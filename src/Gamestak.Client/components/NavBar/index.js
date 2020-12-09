@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { PersonSquare, Gear } from 'react-bootstrap-icons';
 import Navbar from 'react-bootstrap/Navbar';
@@ -6,11 +7,22 @@ import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
+import { commonSelectors } from 'pages/selectors';
 import { SITEMAP_NAVBAR } from 'app/sitemap';
+import * as actions from 'app/modules/actions';
 
 import './style.scss';
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector(commonSelectors.selectIsAuthenticated);
+  const isAdmin = useSelector(commonSelectors.selectIsAdmin);
+
+  const handleShowAuth = view => {
+    dispatch(actions.showModal(view));
+  };
+
   return (
     <Navbar fixed="top" expand="md" className="gs-navbar">
       <Container fluid className="pl-5 pr-5">
@@ -31,12 +43,19 @@ const NavBar = () => {
             }
           </Nav>
           <div>
-            {/* This will be hidden once I add the auth system */}
-            <Button variant="text" className="mr-2"><Gear size={18} className="gs-navbar__gear-icon"/></Button>
-            <Button variant="text" className="mr-2">
-              <PersonSquare size={20} className="mr-1"/> SIGN IN
-            </Button>
-            <Button variant="primary">SIGN UP!</Button>
+            {
+              (isAuthenticated && isAdmin) && <Button variant="text" className="mr-2"><Gear size={18} className="gs-navbar__gear-icon"/></Button>
+            }
+            {
+              !isAuthenticated && (
+                <>
+                  <Button variant="text" className="mr-2" onClick={() => handleShowAuth('signin')}>
+                    <PersonSquare size={20} className="mr-1"/> SIGN IN
+                  </Button>
+                  <Button variant="primary" onClick={() => handleShowAuth('signup')}>SIGN UP!</Button>
+                </>
+              )
+            }
           </div>
         </Navbar.Collapse>
       </Container>
