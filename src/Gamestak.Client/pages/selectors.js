@@ -14,6 +14,7 @@ export const commonSelectors = {
   // User
   selectIsAuthenticated: state => !!commonSelectors.selectCurrentUser(state),
   selectOwnedGames: state => commonSelectors.selectCurrentUser(state)?.ownedGames,
+  selectIsOwnedGame: (state, id) => commonSelectors.selectOwnedGames(state)?.includes(parseInt(id)),
   selectRole: state => commonSelectors.selectCurrentUser(state)?.role,
   selectIsAdmin: state => commonSelectors.selectRole(state)?.managementAccess === true,
 

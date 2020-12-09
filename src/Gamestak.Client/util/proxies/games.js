@@ -7,6 +7,8 @@ export const getGameByID = async id => await axios.get(`/api/game/${id}`);
 
 export const getFeaturedGames = async () => await axios.get('/api/game/featured');
 
+export const getGameKey = async (userId, gameId) => await axios.get('/api/game/key', { params: { userId, gameId } });
+
 // CREATE
 export const featureGame = async (id) => await axios.post(`/api/game/featured/${id}`);
 

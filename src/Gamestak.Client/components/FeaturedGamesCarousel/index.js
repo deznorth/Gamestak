@@ -2,6 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useSelector } from 'react-redux';
+import { commonSelectors } from 'pages/selectors';
 import Carousel from 'react-bootstrap/Carousel';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
@@ -46,6 +48,7 @@ export const FeaturedGamesCarousel = props => {
             <Carousel interval={15000} pause={'hover'} fade>
               {
                 games.map(g => {
+                  const owned = useSelector(state => commonSelectors.selectIsOwnedGame(state, g.gameID));
                   return (
                     <Carousel.Item key={g.gameID}>
                       <div className="gs-featured-carousel__game">
@@ -56,7 +59,7 @@ export const FeaturedGamesCarousel = props => {
                             <p>{g.description}</p>
                           </div>
                           <LinkContainer to={`/game/${g.gameID}`} exact className="gs-featured-carousel__game__info__cta">
-                            <Button variant="primary">PLAY NOW!</Button>
+                            <Button variant="primary">{ owned ? 'ACTIVATE' : 'LEARN MORE'}</Button>
                           </LinkContainer>
                         </div>
                       </div>

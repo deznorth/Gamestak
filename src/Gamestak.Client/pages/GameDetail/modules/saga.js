@@ -1,15 +1,26 @@
-import { put, call, all, takeEvery } from "redux-saga/effects";
+import { put, call, all, takeEvery, select } from "redux-saga/effects";
 import debug from 'debug';
 import Proxies from 'util/proxies';
 import * as actions from './actions';
+import selectors from './selectors';
 
 const log = debug('saga:detail');
 
 function* fetchGame({ payload: id }) {
   try {
-    const result = yield call(Proxies.getGameByID, id);
-    log('fetched game', result.data);
-    yield put(actions.fetchedGame(result.data));
+    const game = yield call(Proxies.getGameByID, id);
+    const user = yield select(selectors.selectCurrentUser);
+    const owned = yield select(selectors.selectIsOwnedGame, id);
+    const gameKey = owned ? yield call(Proxies.getGameKey, user.userId, id) : null;
+
+    const result = {
+      ...game.data,
+      owned,
+      gameKey: gameKey.data,
+    };
+
+    log('fetched game', result);
+    yield put(actions.fetchedGame(result));
   } catch(err) {
     log('Error fetching game', err);
   }

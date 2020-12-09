@@ -102,6 +102,10 @@ $modal-content-bg: $gray-800;
 $modal-backdrop-opacity: 0.7;
 $modal-header-border-color: rgba($white, 0.1);
 
+// Popover
+$popover-bg: $gray-900;
+$popover-border-color: rgba($success, 0.5);
+
 // Component style overrides
 html {
   min-height: 100%;
