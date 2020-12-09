@@ -7,13 +7,70 @@ const INITIAL_STATE = {
   registerAttempt: false,
   registerError: false,
   loadingFilters: false,
+  checkoutAttempt: false,
+  checkoutError: false,
   categories: [],
   features: [],
   currentUser: null,
   shownModal: '',
+  shoppingCart: [],
 };
 
 export default handleActions({
+  [actions.updateOwnedGames]: (state, { payload }) => {
+    const currentUser = state.currentUser;
+    currentUser.ownedGames = payload;
+    localStorage.setItem('user', JSON.stringify(currentUser));
+    return {
+      ...state,
+      currentUser,
+    };
+  },
+  [actions.addToCart]: (state, { payload }) => {
+    const currentUser = state.currentUser;
+    const shoppingCart = state.shoppingCart;
+    if (!shoppingCart.find(i => i.gameID === payload.gameID)) {
+      shoppingCart.push(payload);
+    }
+    localStorage.setItem(`${currentUser?.userId}-cart`, JSON.stringify(shoppingCart));
+    return {
+      ...state,
+      shoppingCart,
+    };
+  },
+  [actions.removeFromCart]: (state, { payload }) => {
+    const currentUser = state.currentUser;
+    const shoppingCart = state.shoppingCart;
+    const filtered = shoppingCart.filter(i => parseInt(i.gameID) != payload);
+    localStorage.setItem(`${currentUser?.userId}-cart`, JSON.stringify(filtered));
+    return {
+      ...state,
+      shoppingCart: filtered,
+    };
+  },
+  [actions.clearCart]: state => {
+    const currentUser = state.currentUser;
+    localStorage.removeItem(`${currentUser?.userId}-cart`);
+    return {
+      ...state,
+      shoppingCart: [],
+    };
+  },
+  [actions.checkoutAttempt]: state => ({
+    ...state,
+    checkoutError: false,
+    checkoutAttempt: true,
+  }),
+  [actions.checkoutSuccess]: state => ({
+    ...state,
+    checkoutError: false,
+    checkoutAttempt: false,
+  }),
+  [actions.checkoutFailure]: state => ({
+    ...state,
+    checkoutAttempt: false,
+    checkoutError: true,
+  }),
   [actions.fetchingFilters]: state => ({
     ...state,
     loadingFilters: true,
@@ -68,11 +125,13 @@ export default handleActions({
     currentUser: null,
   }),
   [actions.initialize]: state => {
-    const currentUser = localStorage.getItem('user');
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const shoppingCart = JSON.parse(localStorage.getItem(`${currentUser?.userId}-cart`)) || [];
     if (currentUser) {
       return {
         ...state,
-        currentUser: JSON.parse(currentUser),
+        currentUser: currentUser,
+        shoppingCart: shoppingCart,
       };
     }
     return {

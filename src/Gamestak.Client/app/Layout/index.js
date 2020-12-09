@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from 'components/NavBar';
+import ShoppingCartModal from 'components/ShoppingCartModal';
 import SignInModal from 'components/SignInModal';
 import SignUpModal from 'components/SignUpModal';
 import { commonSelectors } from 'pages/selectors';
@@ -34,6 +35,10 @@ const Layout = props => {
         />
         <SignUpModal
           show={shownModal === 'signup'}
+          handleClose={handleCloseModal}
+        />
+        <ShoppingCartModal
+          show={shownModal === 'cart'}
           handleClose={handleCloseModal}
         />
       </div>

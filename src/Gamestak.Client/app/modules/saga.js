@@ -32,6 +32,21 @@ function* logout() {
   localStorage.clear();
 }
 
+function* attemptCheckout({ payload }) {
+  try {
+    yield call(Proxies.checkoutGames, payload);
+    log(`Checkedout cart!`);
+    const ownedGames = yield call(Proxies.getOwnedGames, payload.userID);
+    yield put(actions.updateOwnedGames(ownedGames.data));
+    yield put(actions.clearCart());
+    yield put(actions.checkoutSuccess());
+    yield put(actions.hideModal());
+  } catch (err) {
+    yield put(actions.checkoutFailure());
+    log('Error checking out cart', err);
+  }
+}
+
 function* fetchFilters() {
   try {
     const [categories, features] = yield all([
@@ -62,6 +77,7 @@ export default [
   takeEvery(actions.logout, logout),
   takeEvery(actions.loginAttempt, attemptLogin),
   takeEvery(actions.registerAttempt, attemptRegister),
+  takeEvery(actions.checkoutAttempt, attemptCheckout),
   takeEvery(actions.fetchingFilters, fetchFilters),
   takeEvery(actions.initialize, initialize),
 ];

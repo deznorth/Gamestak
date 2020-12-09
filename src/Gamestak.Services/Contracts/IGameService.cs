@@ -23,6 +23,7 @@ namespace Gamestak.Services.Contracts
         public Task<IEnumerable<Category>> GetCategories();
         public Task<IEnumerable<Feature>> GetFeatures();
         public Task<bool> GetIsOwner(int userId, int gameId);
+        public Task<IEnumerable<int>> GetOwnedGames(int userId);
         public Task<GameKey> GetGameKey(int userId, int gameId);
         #endregion
 

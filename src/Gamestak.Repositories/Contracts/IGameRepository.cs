@@ -28,6 +28,7 @@ namespace Gamestak.Repositories.Contracts
         public Task<List<Feature>> GetFeatures();
         public Task<List<Feature>> GetFeaturesByGameID(int gameId);
         public Task<bool> GetIsOwner(int userId, int gameId);
+        public Task<List<int>> GetOwnedGames(int userId);
         public Task<GameKey> GetGameKey(int userId, int gameId);
         #endregion
 

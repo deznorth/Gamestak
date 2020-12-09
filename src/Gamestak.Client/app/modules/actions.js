@@ -20,5 +20,15 @@ export const logout = makeAction('LOGOUT');
 export const fetchingFilters = makeAction('FETCHING_FILTERS');
 export const fetchedFilters = makeAction('FETCHED_FILTERS');
 
+export const addToCart = makeAction('ADD_TO_CART');
+export const removeFromCart = makeAction('REMOVE_FROM_CART');
+export const clearCart = makeAction('CLEAR_CART');
+
+export const checkoutAttempt = makeAction('CHECKOUT_ATTEMPT');
+export const checkoutSuccess = makeAction('CHECKOUT_SUCCESS');
+export const checkoutFailure = makeAction('CHECKOUT_FAILURE');
+
+export const updateOwnedGames = makeAction('UPDATE_OWNED');
+
 // Saga-only actions
 export const initialize = makeAction('INITIALIZE');

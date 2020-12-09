@@ -433,6 +433,24 @@ namespace Gamestak.Repositories
             });
         }
 
+        public Task<List<int>> GetOwnedGames(int userId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var Query = @$"
+                    SELECT GameID FROM {DbTables.GameKeys}
+                    WHERE UserID = @UserId
+                ";
+
+                var games = (await conn.QueryAsync<int>(Query, new
+                {
+                    UserId = userId,
+                })).ToList();
+
+                return games;
+            });
+        }
+
         public Task<GameKey> GetGameKey(int userId, int gameId)
         {
             return gamestakDb.Use(async conn =>

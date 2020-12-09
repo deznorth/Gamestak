@@ -16,7 +16,6 @@ function* fetchGame({ payload: id }) {
 
     const result = {
       ...game.data,
-      owned,
       gameKey: gameKey?.data,
     };
 

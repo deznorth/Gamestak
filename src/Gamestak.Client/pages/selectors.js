@@ -10,6 +10,8 @@ export const commonSelectors = {
   selectCategories: state => commonSelectors.selectShared(state)?.categories,
   selectFeatures: state => commonSelectors.selectShared(state)?.features,
   selectShownModal: state => commonSelectors.selectShared(state)?.shownModal,
+  selectShoppingCart: state => commonSelectors.selectShared(state)?.shoppingCart,
+  selectIsOnCart: (state, id) => !!commonSelectors.selectShoppingCart(state)?.find(i => parseInt(i.gameID) === id),
   
   // User
   selectIsAuthenticated: state => !!commonSelectors.selectCurrentUser(state),
@@ -21,6 +23,7 @@ export const commonSelectors = {
   // Errors
   selectLoginFailure: state => commonSelectors.selectShared(state)?.loginError,
   selectRegisterFailure: state => commonSelectors.selectShared(state)?.registerError,
+  selectCheckoutFailure: state => commonSelectors.selectShared(state)?.checkoutError,
 };
 
 export const createSelectors = additionalSelectors => ({

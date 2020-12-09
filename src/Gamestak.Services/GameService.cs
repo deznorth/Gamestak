@@ -218,6 +218,20 @@ namespace Gamestak.Services
                 throw e;
             }
         }
+
+        public async Task<IEnumerable<int>> GetOwnedGames(int userId)
+        {
+            try
+            {
+                return await gameRepository.GetOwnedGames(userId);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error getting owned games");
+                throw e;
+            }
+        }
+
         public async Task<GameKey> GetGameKey(int userId, int gameId)
         {
             try

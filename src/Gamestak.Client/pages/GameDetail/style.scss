@@ -12,6 +12,9 @@
   }
 
   &__content {
+    .cart-btn {
+      max-height: 8rem;
+    }
     width: 75%;
   }
 }
