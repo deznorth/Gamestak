@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
+import { Redirect } from 'react-router-dom';
 
 import { GamesGrid } from 'components/GamesGrid';
 import { FiltersBar } from 'components/FiltersBar';
@@ -18,9 +19,7 @@ const Library = props => {
     isLoadingFilters,
     categories,
     features,
-    user: {
-      userId,
-    },
+    user,
     games,
     searchParams: {
       searchTerm,
@@ -36,18 +35,22 @@ const Library = props => {
   }, []);
 
   useEffect(() => {
+    if (!!user)
     props.searchGames({
-      ownerID: userId,
+      ownerID: user?.userId,
       searchTerm,
       sortBy: parseInt(sortBy), // Ensure this is always an int
       categories: selectedCategories,
       features: selectedFeatures,
     });
-  }, [searchTerm, sortBy, JSON.stringify(selectedCategories), JSON.stringify(selectedFeatures)]);
+  }, [JSON.stringify(user), searchTerm, sortBy, JSON.stringify(selectedCategories), JSON.stringify(selectedFeatures)]);
 
   const searchParamUpdateHandler = (param, value) => updateSearchParams({ param, value });
 
-  return (
+  const isAuthenticated = !!user;
+
+  
+  return isAuthenticated ? (
     <Container className="gs-library" fluid>
       <h1>My Library</h1>
       <FiltersBar searchTerm={searchTerm} sortBy={sortBy} updateHandler={searchParamUpdateHandler} />
@@ -64,6 +67,8 @@ const Library = props => {
         />
       </div>
     </Container>
+  ) : (
+    <Redirect push to="/" />
   );
 };
 

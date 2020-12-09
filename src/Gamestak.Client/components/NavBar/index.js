@@ -36,11 +36,12 @@ const NavBar = () => {
           <Nav>
             {
               Object.values(SITEMAP_NAVBAR).map((page, index) => {
-                return (
+                const show = page.authRequired ? isAuthenticated : true;
+                return show ? (
                   <LinkContainer key={index} to={page.path} exact={page.exact}>
                     <Nav.Link eventKey={page.path}>{page.name.toUpperCase()}</Nav.Link>
                   </LinkContainer>
-                );
+                ) : null;
               })
             }
           </Nav>

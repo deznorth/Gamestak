@@ -10,13 +10,14 @@ function* fetchGame({ payload: id }) {
   try {
     const game = yield call(Proxies.getGameByID, id);
     const user = yield select(selectors.selectCurrentUser);
-    const owned = yield select(selectors.selectIsOwnedGame, id);
+    const isAuthenticated = !!user;
+    const owned = isAuthenticated ? yield select(selectors.selectIsOwnedGame, id) : false;
     const gameKey = owned ? yield call(Proxies.getGameKey, user.userId, id) : null;
 
     const result = {
       ...game.data,
       owned,
-      gameKey: gameKey.data,
+      gameKey: gameKey?.data,
     };
 
     log('fetched game', result);

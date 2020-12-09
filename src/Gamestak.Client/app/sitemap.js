@@ -26,6 +26,7 @@ export const SITEMAP_NAVBAR = {
     name: 'library',
     path: '/library',
     exact: true,
+    authRequired: true,
     component: LibraryPage,
   },
 };
