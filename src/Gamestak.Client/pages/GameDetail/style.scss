@@ -1,0 +1,17 @@
+.gs-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__carousel {
+    width: 75%;
+    margin-bottom: 4rem;
+    img {
+      height: 60rem;
+      background-size: fill;
+    }
+  }
+
+  &__content {
+    width: 75%;
+  }
+}
