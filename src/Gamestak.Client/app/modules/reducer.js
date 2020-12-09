@@ -34,10 +34,12 @@ export default handleActions({
   }),
   [actions.loginAttempt]: state => ({
     ...state,
+    loginError: false,
     loginAttempt: true,
   }),
   [actions.loginSuccess]: (state, { payload }) => ({
     ...state,
+    shownModal: '',
     loginAttempt: false,
     currentUser: payload,
   }),
@@ -48,10 +50,12 @@ export default handleActions({
   }),
   [actions.registerAttempt]: state => ({
     ...state,
+    registerError: false,
     registerAttempt: true,
   }),
   [actions.registerSuccess]: state => ({
     ...state,
+    shownModal: 'signin',
     registerSuccess: true,
     registerAttempt: false,
   }),
@@ -59,4 +63,20 @@ export default handleActions({
     ...state,
     registerError: true,
   }),
+  [actions.logout]: state => ({
+    ...state,
+    currentUser: null,
+  }),
+  [actions.initialize]: state => {
+    const currentUser = localStorage.getItem('user');
+    if (currentUser) {
+      return {
+        ...state,
+        currentUser: JSON.parse(currentUser),
+      };
+    }
+    return {
+      ...state,
+    };
+  },
 }, INITIAL_STATE);

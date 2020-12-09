@@ -8,7 +8,8 @@ const log = debug('saga:shared');
 function* attemptLogin({ payload: user }) {
   try {
     const currentUser = yield call(Proxies.login, user);
-    log(`User ${currentUser.data.Username} logged in!`);
+    log(`User ${user.username} logged in!`);
+    localStorage.setItem('user', JSON.stringify(currentUser.data));
     yield put(actions.loginSuccess(currentUser.data));
   } catch (err) {
     yield put(actions.loginFailure());
@@ -25,6 +26,10 @@ function* attemptRegister({ payload: user }) {
     yield put(actions.registerFailure());
     log('Error loging in', err);
   }
+}
+
+function* logout() {
+  localStorage.clear();
 }
 
 function* fetchFilters() {
@@ -54,6 +59,7 @@ function* initialize() {
 }
 
 export default [
+  takeEvery(actions.logout, logout),
   takeEvery(actions.loginAttempt, attemptLogin),
   takeEvery(actions.registerAttempt, attemptRegister),
   takeEvery(actions.fetchingFilters, fetchFilters),

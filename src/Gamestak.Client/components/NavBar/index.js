@@ -23,6 +23,8 @@ const NavBar = () => {
     dispatch(actions.showModal(view));
   };
 
+  const handleLogout = () => dispatch(actions.logout());
+
   return (
     <Navbar fixed="top" expand="md" className="gs-navbar">
       <Container fluid className="pl-5 pr-5">
@@ -44,7 +46,12 @@ const NavBar = () => {
           </Nav>
           <div>
             {
-              (isAuthenticated && isAdmin) && <Button variant="text" className="mr-2"><Gear size={18} className="gs-navbar__gear-icon"/></Button>
+              isAuthenticated && (
+                <>
+                  { isAdmin && <Button variant="text" className="mr-2"><Gear size={18} className="gs-navbar__gear-icon"/></Button> }
+                  <Button variant="secondary" onClick={handleLogout}>LOGOUT</Button>
+                </>
+              )
             }
             {
               !isAuthenticated && (

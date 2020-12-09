@@ -15,6 +15,8 @@ export const registerAttempt = makeAction('REGISTER_ATTEMPT');
 export const registerSuccess = makeAction('REGISTER_SUCCESS');
 export const registerFailure = makeAction('REGISTER_FAILURE');
 
+export const logout = makeAction('LOGOUT');
+
 export const fetchingFilters = makeAction('FETCHING_FILTERS');
 export const fetchedFilters = makeAction('FETCHED_FILTERS');
 

@@ -16,6 +16,10 @@ export const commonSelectors = {
   selectOwnedGames: state => commonSelectors.selectCurrentUser(state)?.ownedGames,
   selectRole: state => commonSelectors.selectCurrentUser(state)?.role,
   selectIsAdmin: state => commonSelectors.selectRole(state)?.managementAccess === true,
+
+  // Errors
+  selectLoginFailure: state => commonSelectors.selectShared(state)?.loginError,
+  selectRegisterFailure: state => commonSelectors.selectShared(state)?.registerError,
 };
 
 export const createSelectors = additionalSelectors => ({
