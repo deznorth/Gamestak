@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useSelector } from 'react-redux';
+import { commonSelectors } from 'pages/selectors';
 
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
 
 import './style.scss';
 
@@ -27,6 +30,8 @@ export const GameCard = props => {
     'gs-game-card',
   );
 
+  const owned = useSelector(state => commonSelectors.selectIsOwnedGame(state, gameID));
+
   return (
     <LinkContainer to={`/game/${gameID}`} exact style={{ cursor: 'pointer' }}>
       <Card className={cn}>
@@ -38,13 +43,18 @@ export const GameCard = props => {
           </Card.Text>
           <div>
             {
-              isOnSale && price > 0 ?
+              !owned && isOnSale && price > 0 ?
               <>
                 <Badge variant="primary" className="mr-2">{discountRate}</Badge>
                 <span className="mr-2 text-muted"><s>{price}</s></span>
               </> : null
             }
-            <span>{isOnSale ? discountPrice : (price > 0 ? price : 'Free To Play!')}</span>
+            {
+              !owned && <span>{isOnSale ? discountPrice : (price > 0 ? price : 'Free To Play!')}</span>
+            }
+            {
+              owned && <Button variant="primary" block>Activate Game!</Button>
+            }
           </div>
         </Card.Body>
       </Card>

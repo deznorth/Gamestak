@@ -11,6 +11,7 @@ namespace Gamestak.Services.Contracts
         #endregion
 
         #region READ
+        public Task<UserResponse> Login(User user);
         public Task<List<UserResponse>> GetAllUsers();
         public Task<UserResponse> FindUser(UserSearchRequest searchRequest);
         #endregion

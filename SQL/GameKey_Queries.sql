@@ -14,10 +14,14 @@ DECLARE @GameId int = 24;
 --JOIN GameKeys gk ON g.GameID = gk.GameID
 --WHERE g.GameID = @GameId and gk.UserID = @UserId
 
--- READ get game key by userid and gameid
+-- READ get game keys by userid and gameid
 SELECT * FROM GameKeys
 WHERE GameID = @GameId and UserID = @UserId
 
--- READ get game key by userid and gameid
+-- READ get game keys by userid and gameid
 SELECT * FROM GameKeys
+WHERE UserID = @UserId
+
+-- READ get list of games owned by userid
+SELECT GameID FROM GameKeys
 WHERE UserID = @UserId

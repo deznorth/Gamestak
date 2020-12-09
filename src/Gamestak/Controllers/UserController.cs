@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using System;
 
 namespace Gamestak.Controllers
 {
@@ -33,6 +34,18 @@ namespace Gamestak.Controllers
         #endregion
 
         #region READ
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] User user)
+        {
+            try
+            {
+                var loggedInUser = await userService.Login(user);
+                return Ok(loggedInUser);
+            } catch(ArgumentException e)
+            {
+                return new StatusCodeResult(401);
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -7,6 +7,9 @@ import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
+import Proxies from 'util/proxies';
 
 import { formatDate } from 'util/dates';
 import selectors from './modules/selectors';
@@ -17,6 +20,8 @@ import './style.scss';
 const GameDetail = props => {
   const {
     init,
+    gameKey,
+    owned,
     imageCollection,
     title,
     publisher,
@@ -36,6 +41,15 @@ const GameDetail = props => {
   
   const formattedReleaseDate = formatDate(releaseDate);
 
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Title as="h3">Game Key</Popover.Title>
+      <Popover.Content className="text-nowrap">
+        {gameKey?.keyCode}
+      </Popover.Content>
+    </Popover>
+  );
+
   return (
     <div className="gs-detail">
       <Carousel className="gs-detail__carousel">
@@ -54,9 +68,15 @@ const GameDetail = props => {
           <h1>{title}</h1>
           <InputGroup className="w-auto">
             <InputGroup.Prepend>
-              <InputGroup.Text className="font-weight-bold">${price}</InputGroup.Text>
+              <InputGroup.Text className="font-weight-bold">{ !owned ? `$${price}` : 'OWNED'}</InputGroup.Text>
             </InputGroup.Prepend>
-            <Button className="pl-4 pr-4">PURCHASE</Button>
+            { !owned && <Button className="pl-4 pr-4">PURCHASE</Button> }
+            { owned && (
+                <OverlayTrigger trigger="click" placement="top-end" overlay={popover}>
+                  <Button variant="success">ACTIVATE</Button>
+                </OverlayTrigger>
+              )
+            }
           </InputGroup>
         </div>
         <h5 className="text-muted">{publisher}</h5>
@@ -67,7 +87,7 @@ const GameDetail = props => {
             <h6>Categories</h6>
             <div className="d-flex">
               {
-                categories.map(c => <Badge className="mr-2" variant="primary">{c.categoryName}</Badge>)
+                categories.map((c, i) => <Badge key={i} className="mr-2" variant="primary">{c.categoryName}</Badge>)
               }
             </div>
           </div>
@@ -75,7 +95,7 @@ const GameDetail = props => {
             <h6>Features</h6>
             <div className="d-flex">
               {
-                features.map(f => <Badge className="mr-2" variant="primary">{f.featureName}</Badge>)
+                features.map((f, i) => <Badge key={i} className="mr-2" variant="primary">{f.featureName}</Badge>)
               }
             </div>
           </div>
@@ -107,8 +127,7 @@ GameDetail.propTypes = {
   features: PropTypes.array,
 };
 
-export default connect(state => {
-  return selectors.selectPageState(state, 'detail');
-}, {
+export default connect(state => selectors.selectPageState(state, 'detail')
+, {
   init: actions.initialize,
 })(GameDetail);
