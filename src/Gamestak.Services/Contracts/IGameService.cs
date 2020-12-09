@@ -10,6 +10,7 @@ namespace Gamestak.Services.Contracts
         public Task<Game> SaveGame(GameCreationRequest game);
         public Task<IEnumerable<Game>> BulkSaveGames(List<GameCreationRequest> games);
         public Task<int> FeatureGame(int gameId);
+        public Task<int> SaveGameKeys(int userId, List<int> gameIds);
         #endregion
 
         #region READ
@@ -21,6 +22,8 @@ namespace Gamestak.Services.Contracts
         public Task<GameImage> GetImageByID(int id);
         public Task<IEnumerable<Category>> GetCategories();
         public Task<IEnumerable<Feature>> GetFeatures();
+        public Task<bool> GetIsOwner(int userId, int gameId);
+        public Task<GameKey> GetGameKey(int userId, int gameId);
         #endregion
 
         #region UPDATE

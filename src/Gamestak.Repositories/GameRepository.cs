@@ -164,6 +164,35 @@ namespace Gamestak.Repositories
                 return result;
             });
         }
+
+        public Task<int> SaveGameKeys(int userId, List<int> gameIds)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var query = @$"
+                    IF NOT EXISTS (SELECT GameID FROM {DbTables.GameKeys} WHERE UserID = @UserId and GameID = @GameId)
+                    BEGIN
+	                    INSERT INTO {DbTables.GameKeys} (GameID, UserID)
+	                    VALUES (@GameId, @UserId)
+                    END
+                ";
+
+                var parameters = gameIds.Select(gameId => new
+                {
+                    GameId = gameId,
+                    UserId = userId,
+                }).ToArray();
+
+                var rowsAffected = await conn.ExecuteAsync(query, parameters);
+
+                if (rowsAffected < 0)
+                {
+                    throw new ArgumentException("GameKey already exists or ids are invalid");
+                }
+
+                return rowsAffected;
+            });
+        }
         #endregion
 
         #region READ
@@ -175,11 +204,12 @@ namespace Gamestak.Repositories
                 var searchTermPresent = searchParams.SearchTerm != "";
                 var categoriesPresent = searchParams.Categories != null && searchParams.Categories.Count > 0;
                 var featuresPresent = searchParams.Features != null && searchParams.Features.Count > 0;
+                var ownerPresent = searchParams.OwnerID != null;
 
                 var whereClause = "";
                 var orderbyClause = "ORDER BY ";
 
-                if (searchTermPresent || categoriesPresent || featuresPresent)
+                if (searchTermPresent || categoriesPresent || featuresPresent || ownerPresent)
                 {
                     whereClause = "WHERE";
                 }
@@ -194,6 +224,10 @@ namespace Gamestak.Repositories
                 if (featuresPresent)
                 {
                     whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.FeatureAssignments} fa WHERE fa.GameID = g.GameID and FeatureID IN @FeatureIds)";
+                }
+                if (ownerPresent)
+                {
+                    whereClause += $@" GameID IN (SELECT GameID FROM {DbTables.GameKeys} gk WHERE gk.GameID = g.GameID and UserID = @OwnerId)";
                 }
 
                 switch (searchParams.SortBy)
@@ -225,6 +259,7 @@ namespace Gamestak.Repositories
                 ";
 
                 var games = (await conn.QueryAsync<Game>(query, new {
+                    OwnerId = searchParams.OwnerID,
                     CategoryIds = searchParams.Categories,
                     FeatureIds = searchParams.Features,
                 })).ToList();
@@ -369,6 +404,45 @@ namespace Gamestak.Repositories
                 var result = (await conn.QueryAsync<Feature>(query, new { GameId = gameId })).ToList();
 
                 return result;
+            });
+        }
+
+        public Task<bool> GetIsOwner(int userId, int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var Query = @$"
+                    SELECT g.GameID FROM {DbTables.Games} g
+                    JOIN {DbTables.GameKeys} gk ON g.GameID = gk.GameID
+                    WHERE g.GameID = @GameId and gk.UserID = @UserId
+                ";
+
+                var games = (await conn.QueryAsync<Game>(Query, new
+                {
+                    GameId = gameId,
+                    UserId = userId,
+                })).ToList();
+
+                return games.Count > 0;
+            });
+        }
+
+        public Task<GameKey> GetGameKey(int userId, int gameId)
+        {
+            return gamestakDb.Use(async conn =>
+            {
+                var Query = @$"
+                    SELECT * FROM {DbTables.GameKeys}
+                    WHERE GameID = @GameId and UserID = @UserId
+                ";
+
+                var gameKey = (await conn.QueryAsync<GameKey>(Query, new
+                {
+                    GameId = gameId,
+                    UserId = userId,
+                })).FirstOrDefault();
+
+                return gameKey;
             });
         }
         #endregion
