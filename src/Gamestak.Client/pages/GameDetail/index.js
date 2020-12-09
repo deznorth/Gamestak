@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -9,17 +9,21 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-import Proxies from 'util/proxies';
 
 import { formatDate } from 'util/dates';
 import selectors from './modules/selectors';
 import * as actions from './modules/actions';
+import * as sharedActions from 'app/modules/actions';
 
 import './style.scss';
+import { removeFromCart } from '../../app/modules/actions';
 
 const GameDetail = props => {
   const {
     init,
+    isOnCart,
+    addToCart,
+    removeFromCart,
     gameKey,
     owned,
     imageCollection,
@@ -38,6 +42,18 @@ const GameDetail = props => {
   useEffect(() => {
     init(id);
   }, [id]);
+
+  const handleToggleCart = () => {
+    if (isOnCart) {
+      removeFromCart(id);
+    } else {
+      addToCart({
+        gameID: id,
+        title,
+        price,
+      });
+    }
+  };
   
   const formattedReleaseDate = formatDate(releaseDate);
 
@@ -65,12 +81,12 @@ const GameDetail = props => {
       </Carousel>
       <div className="gs-detail__content">
         <div className="d-flex justify-content-between">
-          <h1>{title}</h1>
-          <InputGroup className="w-auto">
+          <h1 className="text-wrap">{title}</h1>
+          <InputGroup className="w-auto ml-3 flex-nowrap cart-btn">
             <InputGroup.Prepend>
               <InputGroup.Text className="font-weight-bold">{ !owned ? `$${price}` : 'OWNED'}</InputGroup.Text>
             </InputGroup.Prepend>
-            { !owned && <Button className="pl-4 pr-4">PURCHASE</Button> }
+            { !owned && <Button variant={isOnCart ? 'danger' : 'primary'} className="pl-4 pr-4" onClick={handleToggleCart}>{ isOnCart ? 'REMOVE FROM CART' : 'ADD TO CART'}</Button> }
             { owned && (
                 <OverlayTrigger trigger="click" placement="top-end" overlay={popover}>
                   <Button variant="success">ACTIVATE</Button>
@@ -127,7 +143,15 @@ GameDetail.propTypes = {
   features: PropTypes.array,
 };
 
-export default connect(state => selectors.selectPageState(state, 'detail')
-, {
+export default connect(state => {
+  const pageState = selectors.selectPageState(state, 'detail');
+  const isOnCart = pageState.gameID ? selectors.selectIsOnCart(state, pageState.gameID) : false;
+  return {
+    ...pageState,
+    isOnCart,
+  };
+}, {
   init: actions.initialize,
+  addToCart: sharedActions.addToCart,
+  removeFromCart: sharedActions.removeFromCart,
 })(GameDetail);

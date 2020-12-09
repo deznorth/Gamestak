@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { PersonSquare, Gear } from 'react-bootstrap-icons';
+import { PersonSquare, Gear, CartCheck } from 'react-bootstrap-icons';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -19,7 +19,7 @@ const NavBar = () => {
   const isAuthenticated = useSelector(commonSelectors.selectIsAuthenticated);
   const isAdmin = useSelector(commonSelectors.selectIsAdmin);
 
-  const handleShowAuth = view => {
+  const handleShowModal = view => {
     dispatch(actions.showModal(view));
   };
 
@@ -46,6 +46,9 @@ const NavBar = () => {
             }
           </Nav>
           <div>
+            <Button variant="text" className="mr-2" onClick={() => handleShowModal(isAuthenticated ? 'cart' : 'signin')}>
+              <CartCheck size={24} />
+            </Button>
             {
               isAuthenticated && (
                 <>
@@ -57,10 +60,10 @@ const NavBar = () => {
             {
               !isAuthenticated && (
                 <>
-                  <Button variant="text" className="mr-2" onClick={() => handleShowAuth('signin')}>
+                  <Button variant="text" className="mr-2" onClick={() => handleShowModal('signin')}>
                     <PersonSquare size={20} className="mr-1"/> SIGN IN
                   </Button>
-                  <Button variant="primary" onClick={() => handleShowAuth('signup')}>SIGN UP!</Button>
+                  <Button variant="primary" onClick={() => handleShowModal('signup')}>SIGN UP!</Button>
                 </>
               )
             }

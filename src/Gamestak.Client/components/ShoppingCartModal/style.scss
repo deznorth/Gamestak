@@ -1,0 +1,13 @@
+@import 'util/styles/gamestak-vars';
+
+.gs-cart {
+  &__table {
+    td {
+      vertical-align: middle !important;
+    }
+  }
+
+  &__remove {
+    fill: $danger;
+  }
+}

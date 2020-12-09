@@ -12,5 +12,7 @@ export const getGameKey = async (userId, gameId) => await axios.get('/api/game/k
 // CREATE
 export const featureGame = async (id) => await axios.post(`/api/game/featured/${id}`);
 
+export const checkoutGames = async cart => await axios.post('/api/game/key', cart);
+
 // DELETE
 export const unfeatureGame = async (id) => await axios.delete(`/api/game/featured/${id}`);
