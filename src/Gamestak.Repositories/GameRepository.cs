@@ -209,25 +209,31 @@ namespace Gamestak.Repositories
                 var whereClause = "";
                 var orderbyClause = "ORDER BY ";
 
+                var listOfWhereFilters = new List<string>();
+
                 if (searchTermPresent || categoriesPresent || featuresPresent || ownerPresent)
                 {
-                    whereClause = "WHERE";
+                    whereClause = "WHERE ";
                 }
                 if (searchTermPresent)
                 {
-                    whereClause += $@" Title LIKE '%{searchParams.SearchTerm}%'";
+                    listOfWhereFilters.Add($@"Title LIKE '%{searchParams.SearchTerm}%'");
                 }
                 if (categoriesPresent)
                 {
-                    whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.CategoryAssignments} ca WHERE ca.GameID = g.GameID and CategoryID IN @CategoryIds)";
+                    listOfWhereFilters.Add(@$"GameID IN (SELECT GameID FROM {DbTables.CategoryAssignments} ca WHERE ca.GameID = g.GameID and CategoryID IN @CategoryIds)");
                 }
                 if (featuresPresent)
                 {
-                    whereClause += @$" GameID IN (SELECT GameID FROM {DbTables.FeatureAssignments} fa WHERE fa.GameID = g.GameID and FeatureID IN @FeatureIds)";
+                    listOfWhereFilters.Add(@$"GameID IN (SELECT GameID FROM {DbTables.FeatureAssignments} fa WHERE fa.GameID = g.GameID and FeatureID IN @FeatureIds)");
                 }
                 if (ownerPresent)
                 {
-                    whereClause += $@" GameID IN (SELECT GameID FROM {DbTables.GameKeys} gk WHERE gk.GameID = g.GameID and UserID = @OwnerId)";
+                    listOfWhereFilters.Add($@"GameID IN (SELECT GameID FROM {DbTables.GameKeys} gk WHERE gk.GameID = g.GameID and UserID = @OwnerId)");
+                }
+                if (whereClause != "")
+                {
+                    whereClause += String.Join(" AND ", listOfWhereFilters);
                 }
 
                 switch (searchParams.SortBy)
